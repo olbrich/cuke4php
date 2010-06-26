@@ -104,7 +104,7 @@ class Cuke4Php {
                         return $this->stepMatches($sData->name_to_match);
                         break;
                     case 'invoke':
-                        return $this->invoke($sData);
+                        return $this->oScenario->invoke($sData->id, $sData->args);
                         break;
                     case 'end_scenario':
                         return $this->endScenario($sData);
@@ -142,7 +142,7 @@ class Cuke4Php {
                 $aArgs = array();
                 array_shift($aMatches);
                 foreach ($aMatches as $aMatch) {
-                    $aArgs[] = array('val' => $aMatch[0], 'pos' => $aMatch[1]);
+                    $aArgs[] = array('val' => $aMatch[0][0], 'pos' => $aMatch[0][1]);
                 }
                 $aSteps[] = array('id' => $i, 'args' => $aArgs, 'source' => $aStep['filename'] . ":" . $aStep['startline']);
             }
@@ -180,10 +180,10 @@ class Cuke4Php {
         $aParams = array();
         $sStepName = preg_replace("/\"[^\"]*\"/", "\"([^\"]*)\"", preg_quote($aSnippet->step_name), -1, &$count);
         for ($param = 1; $param <= $count; $param++) {
-            $aParams[] = "arg$param";
+            $aParams[] = "\$arg$param";
         }
         if ($aSnippet->multiline_arg_class !== "") {
-            $aParams[] = "table";
+            $aParams[] = "\$table";
         }
         $sParams = implode(",", $aParams);
         $sMethodBody = <<<EOT

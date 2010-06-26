@@ -1,10 +1,10 @@
 <?php
 
 class CucumberSteps {
-    private $aGlobals = array();
+    protected $aGlobals;
 
-    public function __construct($_aGlobals = array()) {
-        $this->aGlobals = $_aGlobals;
+    public function __construct(&$_aGlobals) {
+        $this->aGlobals =& $_aGlobals;
     }
 
 
