@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+include "../lib/Cuke4Php.php";
+
+$oServer = new Cuke4Php();
+$oServer->run();
+?>

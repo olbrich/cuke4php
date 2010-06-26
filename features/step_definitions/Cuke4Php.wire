@@ -1,0 +1,4 @@
+host: localhost
+port: 54321
+invoke:
+    timeout: 0.1
