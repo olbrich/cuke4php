@@ -15,16 +15,23 @@ class WireSteps extends CucumberSteps {
      */
     function beforeAll() {
         print "->beforeAll\n";
-        return array('failure');        
+        return array('failure');
     }
 
     /**
-    * tags: @wire @wip @pending
-    * Given /^some setup$/
-    **/
+     * Given /^some setup$/
+     **/
     public function stepSomeSetup() {
         return array("pending");
     }
+
+    /**
+     * When /^I take an action$/
+     **/
+    public function stepITakeAnAction() {
+        return array('pending');
+    }
+
 
 }
 

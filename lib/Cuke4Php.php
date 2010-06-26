@@ -32,21 +32,24 @@ class Cuke4Php {
                 $sComment = $oMethod->getDocComment();
                 $aMatches = array();
                 $aMethod = array();
-                preg_match("/(@.+)/im", $sComment, $aMatches);
-                $aMethod['tags']= explode(" ", str_replace("@","",$aMatches[1]));
                 $aMethod['method'] = $oMethod->name;
                 $aMethod['class'] = $oMethod->class;
-                if (substr($oMethod->name,0,4) === "step") {
+                $aMethod['filename'] = $oMethod->getFileName();
+                $aMethod['startline'] = $oMethod->getStartLine();
+                if (substr($oMethod->name, 0, 4) === "step") {
                     preg_match("/(?:Given|When|Then) (.+)$/im", $sComment, $aMatches);
-                    array_push($this->aWorld['steps'], array($aMatches[1], $aMethod));
+                    $aMethod['regexp'] = $aMatches[1];
+                    $this->aWorld['steps'][] = $aMethod;
                     continue;
                 }
-                if (substr($oMethod->name,0,6) === "before") {
-                    array_push($this->aWorld['before'], $aMethod);
+                preg_match("/(@.+)/im", $sComment, $aMatches);
+                $aMethod['tags'] = explode(" ", str_replace("@", "", $aMatches[1]));
+                if (substr($oMethod->name, 0, 6) === "before") {
+                    $this->aWorld['before'][] = $aMethod;
                     continue;
                 }
-                if (substr($oMethod->name,0,5) === "after") {
-                    array_push($this->aWorld['after'], $aMethod);
+                if (substr($oMethod->name, 0, 5) === "after") {
+                    $this->aWorld['after'][] = $aMethod;
                     continue;
                 }
             }
@@ -98,7 +101,7 @@ class Cuke4Php {
                         return $this->beginScenario($sData->tags);
                         break;
                     case 'step_matches':
-                        return $this->stepMatches($sData);
+                        return $this->stepMatches($sData->name_to_match);
                         break;
                     case 'invoke':
                         return $this->invoke($sData);
@@ -129,10 +132,23 @@ class Cuke4Php {
     /*
      * match steps
      */
-    function stepMatches($aSteps) {
+    function stepMatches($sStep) {
         print("stepMatches\n");
-        var_dump($aSteps);
-        return array('success', array());
+        $aSteps = array();
+        for ($i = 0; $i < count($this->aWorld['steps']); $i++) {
+            $aMatches = array();
+            $aStep = $this->aWorld['steps'][$i];
+            if (preg_match_all($aStep['regexp'], $sStep, $aMatches, PREG_OFFSET_CAPTURE)) {
+                $aArgs = array();
+                array_shift($aMatches);
+                foreach ($aMatches as $aMatch) {
+                    $aArgs[] = array('val' => $aMatch[0], 'pos' => $aMatch[1]);
+                }
+                $aSteps[] = array('id' => $i, 'args' => $aArgs, 'source' => $aStep['filename'] . ":" . $aStep['startline']);
+            }
+            ;
+        }
+        return array('success', $aSteps);
     }
 
     /*
@@ -159,21 +175,20 @@ class Cuke4Php {
      */
     function snippetText($aSnippet) {
         print("Snippet Text\n");
-        $sMethodName = "step" . str_replace(" ","", ucwords(preg_replace("/\W+/"," ",preg_replace("/\"[^\"]*\"/","Parameter",$aSnippet->step_name))));
+        $sMethodName = "step" . str_replace(" ", "", ucwords(preg_replace("/\W+/", " ", preg_replace("/\"[^\"]*\"/", "Parameter", $aSnippet->step_name))));
         $count = 0;
         $aParams = array();
-        $sStepName = preg_replace("/\"[^\"]*\"/","\"([^\"]*)\"",preg_quote($aSnippet->step_name), -1, &$count);
-        for ($param=1; $param<=$count; $param++) {
-            $aParams[]= "arg$param";
+        $sStepName = preg_replace("/\"[^\"]*\"/", "\"([^\"]*)\"", preg_quote($aSnippet->step_name), -1, &$count);
+        for ($param = 1; $param <= $count; $param++) {
+            $aParams[] = "arg$param";
         }
         if ($aSnippet->multiline_arg_class !== "") {
-            $aParams[]= "table";
+            $aParams[] = "table";
         }
         $sParams = implode(",", $aParams);
         $sMethodBody = <<<EOT
 
 /**
-* tags:
 * {$aSnippet->step_keyword}/^$sStepName$/
 **/
 public function $sMethodName($sParams) {
@@ -181,6 +196,7 @@ public function $sMethodName($sParams) {
 }
 EOT;
         return array('success', $sMethodBody);
+    }
 }
-}
+
 ?>
