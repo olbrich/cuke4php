@@ -1,6 +1,8 @@
 <?php
 set_time_limit(0);
 require_once("CucumberScenario.php");
+require_once("CucumberSteps.php");
+
 /**
  *  Cuke4Php implements the Cucumber wire protocol for PHP
  */
@@ -10,17 +12,16 @@ class Cuke4Php {
     private $oSocket;
     private $oScenario;
     private $aStepClasses;
-    private $aSteps = array();
-    private $aBeforeHooks = array();
-    private $aAfterHooks = array();
+    private $aWorld = array(
+        'steps' => array(),
+        'before' => array(),
+        'after' => array()
+    );
 
     function __construct() {
         // TODO: Load step definitions
         $predefined_classes = get_declared_classes();
-        foreach (glob("../features/support/*.php") as $sFilename) {
-            require $sFilename;
-        }
-        foreach (glob("../features/step_definitions/*.php") as $sFilename) {
+        foreach (glob("../features/**/*.php") as $sFilename) {
             require $sFilename;
         }
         $this->aStepClasses = array_values(array_diff(get_declared_classes(), $predefined_classes));
@@ -32,19 +33,20 @@ class Cuke4Php {
                 $aMatches = array();
                 $aMethod = array();
                 preg_match("/(@.+)/im", $sComment, $aMatches);
-                $aMethod['tags']= explode(" ", $aMatches[1]);
-                $aMethod['method'] = array($oMethod->class, $oMethod->name);
+                $aMethod['tags']= explode(" ", str_replace("@","",$aMatches[1]));
+                $aMethod['method'] = $oMethod->name;
+                $aMethod['class'] = $oMethod->class;
                 if (substr($oMethod->name,0,4) === "step") {
                     preg_match("/(?:Given|When|Then) (.+)$/im", $sComment, $aMatches);
-                    array_push($this->aSteps, array($aMatches[1], $aMethod));
+                    array_push($this->aWorld['steps'], array($aMatches[1], $aMethod));
                     continue;
                 }
                 if (substr($oMethod->name,0,6) === "before") {
-                    array_push($this->aBeforeHooks, array($aMethod));
+                    array_push($this->aWorld['before'], $aMethod);
                     continue;
                 }
                 if (substr($oMethod->name,0,5) === "after") {
-                    array_push($this->aAfterHooks, array($aMethod));
+                    array_push($this->aWorld['after'], $aMethod);
                     continue;
                 }
             }
@@ -90,10 +92,10 @@ class Cuke4Php {
                 $aCommand = json_decode($sInput);
                 $sAction = $aCommand[0];
                 $sData = $aCommand[1];
-                var_dump($aCommand, $sAction);
+                //var_dump($aCommand, $sAction);
                 switch ($sAction) {
                     case 'begin_scenario':
-                        return $this->beginScenario($sData);
+                        return $this->beginScenario($sData->tags);
                         break;
                     case 'step_matches':
                         return $this->stepMatches($sData);
@@ -120,9 +122,8 @@ class Cuke4Php {
      */
     function beginScenario($aTags) {
         print("Begin Scenario\n");
-        $this->oScenario = new CucumberScenario($aTags);
-        $this->oScenario->invokeBeforeHooks();
-        return array('success');
+        $this->oScenario = new CucumberScenario($this->aWorld);
+        return $this->oScenario->invokeBeforeHooks($aTags);
     }
 
     /*
@@ -148,11 +149,9 @@ class Cuke4Php {
      */
     function endScenario($aTags) {
         print("End Scenario\n");
-        $this->oScenario->invokeAfterHooks();
+        $oResult = $this->oScenario->invokeAfterHooks($aTags);
         $this->oScenario = null;
-        var_dump($aTags);
-        // call any after blocks defined for any tags
-        return array('success');
+        return $oResult;
     }
 
     /*
@@ -178,7 +177,7 @@ class Cuke4Php {
 * {$aSnippet->step_keyword}/^$sStepName$/
 **/
 public function $sMethodName($sParams) {
-    return array("pending");
+    return array('pending');
 }
 EOT;
         return array('success', $sMethodBody);

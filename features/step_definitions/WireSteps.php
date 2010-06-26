@@ -1,19 +1,21 @@
 <?php
 
-class WireSteps {
+class WireSteps extends CucumberSteps {
 
     /**
      * Before @wire
      */
     function beforeWire() {
-
+        print "->beforeWire\n";
+        $this->aGlobals['before'] = 'beforeWire';
     }
 
     /**
      * Before
      */
     function beforeAll() {
-
+        print "->beforeAll\n";
+        return array('failure');        
     }
 
     /**
