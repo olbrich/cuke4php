@@ -41,12 +41,26 @@ class CucumberScenario {
      * @param  $aArgs
      * @return mixed
      *
-     * Invokes a step
+     * Invokes a step.  Steps can use PHPUnit assertions and will
+     * mark themselves as pending if the self::markTestIncomplete() or self:markTestSkipped()
+     * functions are called.  Failed expectations are returned as messages while all other
+     * Exceptions are reported back as exceptions.
      */
     function invoke($iStepId, $aArgs) {
         $aStep = $this->aWorld['steps'][$iStepId];
         $oStep = new $aStep['class']($this->aGlobals);
-        return call_user_func_array(array($oStep, $aStep['method']),$aArgs);
+        try {
+            call_user_func_array(array($oStep, $aStep['method']),$aArgs);
+        } catch (PHPUnit_Framework_IncompleteTestError $e) {
+            return array('pending',$e->getMessage());
+        } catch (PHPUnit_Framework_SkippedTestError $e) {
+            return array('pending',$e->getMessage());
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            return array('fail', array('message' => $e->getMessage()));
+        } catch (Exception $e) {
+            return array('fail', array('exception' => $e->__toString()));            
+        }
+        return array('success');
     }
 
     

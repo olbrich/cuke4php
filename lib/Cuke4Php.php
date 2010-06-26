@@ -1,5 +1,6 @@
 <?php
 set_time_limit(0);
+require_once "PHPUnit/Framework.php";
 require_once("CucumberScenario.php");
 require_once("CucumberSteps.php");
 
@@ -64,6 +65,7 @@ class Cuke4Php {
     }
 
     function run() {
+        print "Starting\n";
         $this->oSocket = socket_create_listen($this->iPort);
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
