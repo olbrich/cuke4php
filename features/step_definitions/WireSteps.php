@@ -73,7 +73,7 @@ class WireSteps extends CucumberSteps {
      * Then /^a step with a multiline string\:$/
      **/
     public function stepAStepWithAMultilineString($sString) {
-        var_dump($sString);
+
     }
 
 

@@ -26,11 +26,10 @@ class Cuke4Php {
             $this->iPort = 16816;
         }
 
-
         $aPredefinedClasses = get_declared_classes();
-        // TODO: Load step definitions from a given directory
         // TODO: Load files in support path before step definitions
-        foreach (glob("../features/**/*.php") as $sFilename) {
+        print "Loading step definitions from $_sFeaturePath\n";
+        foreach (glob("$_sFeaturePath/**/*.php") as $sFilename) {
             require $sFilename;
         }
         $this->aStepClasses = array_values(array_diff(get_declared_classes(), $aPredefinedClasses));
@@ -79,11 +78,10 @@ class Cuke4Php {
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
             socket_getpeername($connection, $raddr, $rport);
             print "Received Connection from $raddr:$rport\n";
-            while ($this->bRun && ($input = socket_read($connection, 1024))) {
+            while ($this->bRun && ($input = socket_read($connection, 1024 * 4))) {
                 $data = trim($input);
                 if ($data !== "") {
                     $output = json_encode($this->process($data)) . "\n";
-                    print "output = $output\n";
                     socket_write($connection, $output);
                 }
             }
@@ -105,7 +103,6 @@ class Cuke4Php {
                 $aCommand = json_decode($sInput);
                 $sAction = $aCommand[0];
                 $sData = $aCommand[1];
-                //var_dump($aCommand, $sAction);
                 switch ($sAction) {
                     case 'begin_scenario':
                         return $this->beginScenario($sData->tags);
@@ -134,7 +131,6 @@ class Cuke4Php {
      * run any before hooks
      */
     function beginScenario($aTags) {
-        print("Begin Scenario\n");
         $this->oScenario = new CucumberScenario($this->aWorld);
         return $this->oScenario->invokeBeforeHooks($aTags);
     }
@@ -143,7 +139,6 @@ class Cuke4Php {
      * match steps
      */
     function stepMatches($sStep) {
-        print("stepMatches\n");
         $aSteps = array();
         for ($i = 0; $i < count($this->aWorld['steps']); $i++) {
             $aMatches = array();
@@ -162,19 +157,9 @@ class Cuke4Php {
     }
 
     /*
-     * invoke any step definitions
-     */
-    function invoke($aArgs) {
-        print("Invoke\n");
-        var_dump($aArgs);
-        return array('pending', array("Not Implemented"));
-    }
-
-    /*
      * run any after hooks
      */
     function endScenario($aTags) {
-        print("End Scenario\n");
         $oResult = $this->oScenario->invokeAfterHooks($aTags);
         $this->oScenario = null;
         return $oResult;
@@ -184,7 +169,6 @@ class Cuke4Php {
      * return a template for an undefined step
      */
     function snippetText($aSnippet) {
-        print("Snippet Text\n");
         $sMethodName = "step" . str_replace(" ", "", ucwords(preg_replace("/\W+/", " ", preg_replace("/\"[^\"]*\"/", "Parameter", $aSnippet->step_name))));
         $count = 0;
         $aParams = array();

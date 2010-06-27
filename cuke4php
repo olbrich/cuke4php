@@ -25,4 +25,4 @@ while getopts "hp:" opt; do
   esac
 done
 
-bin/cuke4php -p $PORT ${!OPTIND}
+bin/cuke4php.php -p $PORT ${!OPTIND}
