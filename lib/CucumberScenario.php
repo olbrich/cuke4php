@@ -1,4 +1,6 @@
 <?php
+require_once "CucumberSteps.php";
+
 class CucumberScenario {
 
     // provide a place we can store data

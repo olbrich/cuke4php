@@ -1,14 +1,14 @@
 <?php
 set_time_limit(0);
-require_once "PHPUnit/Framework.php";
-require_once("CucumberScenario.php");
-require_once("CucumberSteps.php");
+require_once "Cucumber.php";
 
 /**
  *  Cuke4Php implements the Cucumber wire protocol for PHP
+ *
+ * http://wiki.github.com/aslakhellesoy/cucumber/wire-protocol
  */
 class Cuke4Php {
-    public $iPort = 54321;
+    public $iPort;
     private $bRun;
     private $oSocket;
     private $oScenario;
@@ -19,13 +19,21 @@ class Cuke4Php {
         'after' => array()
     );
 
-    function __construct() {
-        // TODO: Load step definitions
-        $predefined_classes = get_declared_classes();
+    function __construct($_sFeaturePath, $_iPort = 16816) {
+        if ($_iPort > 0) {
+            $this->iPort = $_iPort;
+        } else {
+            $this->iPort = 16816;
+        }
+
+
+        $aPredefinedClasses = get_declared_classes();
+        // TODO: Load step definitions from a given directory
+        // TODO: Load files in support path before step definitions
         foreach (glob("../features/**/*.php") as $sFilename) {
             require $sFilename;
         }
-        $this->aStepClasses = array_values(array_diff(get_declared_classes(), $predefined_classes));
+        $this->aStepClasses = array_values(array_diff(get_declared_classes(), $aPredefinedClasses));
         foreach ($this->aStepClasses as $sClass) {
             $oReflection = new ReflectionClass($sClass);
             $aMethods = $oReflection->getMethods();
@@ -65,7 +73,7 @@ class Cuke4Php {
     }
 
     function run() {
-        print "Starting\n";
+        print "Listening to port $this->iPort\n";
         $this->oSocket = socket_create_listen($this->iPort);
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
@@ -109,7 +117,7 @@ class Cuke4Php {
                         return $this->oScenario->invoke($sData->id, $sData->args);
                         break;
                     case 'end_scenario':
-                        return $this->endScenario($sData);
+                        return $this->endScenario($sData->tags);
                         break;
                     case 'snippet_text':
                         return $this->snippetText($sData);
@@ -184,9 +192,16 @@ class Cuke4Php {
         for ($param = 1; $param <= $count; $param++) {
             $aParams[] = "\$arg$param";
         }
-        if ($aSnippet->multiline_arg_class !== "") {
-            $aParams[] = "\$table";
+        switch ($aSnippet->multiline_arg_class) {
+            case "Cucumber::Ast::Table":
+                $aParams[] = "\$aTable";
+                break;
+            case "Cucumber::Ast::PyString":
+                $aParams[] = "\$sString";
+                break;
+            default:
         }
+
         $sParams = implode(",", $aParams);
         $sMethodBody = <<<EOT
 
@@ -194,7 +209,7 @@ class Cuke4Php {
 * {$aSnippet->step_keyword}/^$sStepName$/
 **/
 public function $sMethodName($sParams) {
-    return array('pending');
+    self::markPending();
 }
 EOT;
         return array('success', $sMethodBody);

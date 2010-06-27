@@ -3,24 +3,21 @@
 class WireSteps extends CucumberSteps {
 
     /**
-     * Before @wire
+     * @wire
      */
     function beforeWire() {
         $this->aGlobals['before'] = 'beforeWire';
     }
 
-    /**
-     * Before
-     */
     function beforeAll() {
-        return array('fail');
+
     }
 
     /**
      * Given /^some setup$/
      **/
     public function stepSomeSetup() {
-        self::markTestIncomplete("Not Implemented");
+        
     }
 
     /**
@@ -30,27 +27,27 @@ class WireSteps extends CucumberSteps {
     }
 
     /**
-    * Then /^something happens$/
-    **/
+     * Then /^something happens$/
+     **/
     public function stepSomethingHappens() {
     }
 
     /**
-    * Then /^an undefined step with a "([^"]*)"$/
-    **/
+     * Then /^an undefined step with a "([^"]*)"$/
+     **/
     public function stepAnUndefinedStepWithAParameter($arg1) {
-        self::assertEquals('test',$arg1);
+        self::assertEquals('param', $arg1);
     }
 
     /**
-    * Then /^a step with a "([^"]*)" and the following table\:$/
-    **/
-    public function stepAStepWithAParameterAndTheFollowingTable($arg1,$table) {
+     * Then /^a step with a "([^"]*)" and the following table\:$/
+     **/
+    public function stepAStepWithAParameterAndTheFollowingTable($arg1, $table) {
     }
 
     /**
-    * Given /^I shoot the messenger$/
-    **/
+     * Given /^I shoot the messenger$/
+     **/
     public function stepIShootTheMessenger() {
     }
 
@@ -71,6 +68,14 @@ class WireSteps extends CucumberSteps {
      **/
     public function stepItShouldBeClear() {
     }
+
+    /**
+     * Then /^a step with a multiline string\:$/
+     **/
+    public function stepAStepWithAMultilineString($sString) {
+        var_dump($sString);
+    }
+
 
 }
 
