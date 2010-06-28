@@ -17,6 +17,6 @@ namespace :server do
     
     desc "stop cuke4php server"
     task :stop do
-
+      sh "echo 'quit' | nc #{ENV['SERVER'] || 'localhost'} #{ENV['PORT'] || 16816}"
     end
 end
