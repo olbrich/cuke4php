@@ -6,12 +6,22 @@ class CucumberScenario {
     // provide a place we can store data
     public $aGlobals = array();
 
+    // the world holds the definitions for the before, after, and step definitions
     private $aWorld;
 
+    /**
+     * @param array $_aWorld
+     * @return void
+     */
     function __construct($_aWorld = array()) {
         $this->aWorld = $_aWorld;
     }
 
+    /**
+     * @param  $aTags
+     * @return array
+     * invokes all the before hooks defined that either have no tags or tags corresponding to this scenario's tags
+     */
     function invokeBeforeHooks($aTags) {
         foreach ($this->aWorld['before'] as $aBeforeHook) {
             if (count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
@@ -25,6 +35,11 @@ class CucumberScenario {
         return array('success');
     }
 
+    /**
+     * @param  $aTags
+     * @return array
+     * invoke all after hooks defined that either have no tags, or tags that match the tags of the current scenario
+     */
     function invokeAfterHooks($aTags) {
         foreach ($this->aWorld['after'] as $aAfterHook) {
             if (count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
@@ -64,8 +79,6 @@ class CucumberScenario {
         }
         return array('success');
     }
-
-    
 
 }
 ?>

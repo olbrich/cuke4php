@@ -3,11 +3,20 @@ require 'rake'
 
 task :default => :features
 
-desc "run specs"
-task :features do
-    sh "cucumber features"
-end
+namespace :tests do
+  desc "run cucumber features"
+  task :features do
+      sh "cucumber features"
+  end
 
+  desc "run phpunit tests"
+  task :phpunit do
+    sh "./PHPUnit/phpunit.php tests/**/*.php"
+  end
+
+  task :all => [:phpunit, :features]
+
+end
 
 namespace :server do
     desc "start cuke4php server"
