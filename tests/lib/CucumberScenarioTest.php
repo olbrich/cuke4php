@@ -49,6 +49,13 @@ class TestSteps extends CucumberSteps {
         throw new TestException('Exception');
     }
 
+    /**
+     * Given /^"arg1" not equal to "arg2"$/
+     */
+    public function stepNotEqual($arg1,$arg2) {
+        self::assertTrue($arg1 !== $arg2);
+    }
+
 }
 
 
@@ -111,6 +118,10 @@ class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
                     'class' => 'TestSteps',
                     'method' => 'stepException'
                     ),
+                6 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepNotEqual'
+                )
 
             )
 
@@ -173,6 +184,10 @@ class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
 
     public function testInvokeShouldFailWhenExceptionThrown() {
         self::assertEquals(array('fail',array('exception' => 'TestException')), $this->oScenario->invoke(5,array()));
+    }
+
+    public function testInvokeShouldSucceedWithParameters() {
+        self::assertEquals(array('success'), $this->oScenario->invoke(6,array('one','two')));
     }
 
 }
