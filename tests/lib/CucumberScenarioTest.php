@@ -2,6 +2,56 @@
 
 require_once dirname(__FILE__) . "/../../lib/Cucumber.php";
 
+class TestException extends Exception {
+    public function __toString() {
+        return "TestException";
+    }
+}
+
+class TestSteps extends CucumberSteps {
+    /**
+     * Given /^successful$/
+     **/
+    public function stepSuccessful() {}
+
+    /**
+     * Given /^incomplete$/
+     */
+    public function stepIncomplete() {
+        self::markTestIncomplete('incomplete');
+    }
+
+    /**
+     * Given /^skipped$/
+     */
+    public function stepSkipped() {
+        self::markTestSkipped('skipped');
+    }
+
+    /**
+     * Given /^pending$/
+     */
+    public function stepPending() {
+        self::markPending('pending');
+    }
+
+    /**
+     * Given /^a failed expectation$/
+     */
+    public function stepFailed() {
+        self::assertEquals(true, false);
+    }
+
+    /**
+     * Given /^an exception is thrown$/
+     */
+    public function stepException() {
+        throw new TestException('Exception');
+    }
+
+}
+
+
 class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
 
     public $oScenario;
@@ -35,7 +85,35 @@ class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
                     'class' => 'MockCucumberHook',
                     'method' => 'afterWithNoTags'
                 )
+            ),
+            'steps' => array(
+                0 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepSuccessful'
+                    ),
+                1 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepIncomplete'
+                    ),
+                2 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepSkipped'
+                    ),
+                3 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepPending'
+                    ),
+                4 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepFailed'
+                    ),
+                5 => array(
+                    'class' => 'TestSteps',
+                    'method' => 'stepException'
+                    ),
+
             )
+
         );
         $this->aTags = array('one','two');
         $this->oScenario = new CucumberScenario($this->aWorld);
@@ -71,6 +149,30 @@ class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
         $this->oMockHook->expects(self::once())->method('afterWithNoTags');
         CucumberHook::setMock('MockCucumberHook', $this->oMockHook);
         self::assertEquals(array('success'),$this->oScenario->invokeAfterHooks(array()));
+    }
+
+    public function testInvokeShouldReturnSuccess() {
+        self::assertEquals(array('success'),$this->oScenario->invoke(0,array()));
+    }
+
+    public function testInvokeShouldReturnPendingWhenIncomplete() {
+        self::assertEquals(array('pending','incomplete'),$this->oScenario->invoke(1,array()));
+    }
+
+    public function testInvokeShouldReturnPendingWhenSkipped() {
+        self::assertEquals(array('pending','skipped'),$this->oScenario->invoke(2,array()));
+    }
+
+    public function testInvokeShouldReturnPendingWhenPending() {
+        self::assertEquals(array('pending','pending'),$this->oScenario->invoke(3,array()));
+    }
+
+    public function testInvokeShouldFailWhenAssertionNotMet() {
+        self::assertEquals(array('fail',array('message' => 'Failed asserting that <boolean:false> is equal to <boolean:true>.')), $this->oScenario->invoke(4,array()));
+    }
+
+    public function testInvokeShouldFailWhenExceptionThrown() {
+        self::assertEquals(array('fail',array('exception' => 'TestException')), $this->oScenario->invoke(5,array()));
     }
 
 }
