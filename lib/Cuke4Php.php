@@ -30,7 +30,8 @@ class Cuke4Php {
         // TODO: Load files in support path before step definitions
         print "Loading step definitions from $_sFeaturePath\n";
         foreach (glob("$_sFeaturePath/**/*.php") as $sFilename) {
-            require $sFilename;
+            require_once $sFilename;
+            require_once $sFilename;
         }
         $this->aStepClasses = array_values(array_diff(get_declared_classes(), $aPredefinedClasses));
         foreach ($this->aStepClasses as $sClass) {
@@ -62,6 +63,14 @@ class Cuke4Php {
                 }
             }
         }
+    }
+
+    /**
+     * @param  $oScenario
+     * @return void
+     */
+    function setScenario($oScenario) {
+        $this->oScenario = $oScenario;
     }
 
     function __destruct() {
@@ -127,16 +136,20 @@ class Cuke4Php {
         }
     }
 
-    /*
-     * run any before hooks
+    /**
+     * @param  $aTags
+     * @return array
+     * run any before hooks for a scenario
      */
     function beginScenario($aTags) {
-        $this->oScenario = new CucumberScenario($this->aWorld);
+        $this->setScenario(CucumberScenario::getInstance($this->aWorld));
         return $this->oScenario->invokeBeforeHooks($aTags);
     }
 
-    /*
-     * match steps
+    /**
+     * @param  $sStep
+     * @return array
+     * when given a string, this method will return information about any step that matches it
      */
     function stepMatches($sStep) {
         $aSteps = array();
@@ -150,14 +163,15 @@ class Cuke4Php {
                     $aArgs[] = array('val' => $aMatch[0][0], 'pos' => $aMatch[0][1]);
                 }
                 $aSteps[] = array('id' => $i, 'args' => $aArgs, 'source' => $aStep['filename'] . ":" . $aStep['startline']);
-            }
-            ;
+            };
         }
         return array('success', $aSteps);
     }
 
-    /*
-     * run any after hooks
+    /**
+     * @param  $aTags
+     * @return array
+     * run any after hooks for a scenario
      */
     function endScenario($aTags) {
         $oResult = $this->oScenario->invokeAfterHooks($aTags);

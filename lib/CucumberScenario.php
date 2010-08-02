@@ -9,12 +9,36 @@ class CucumberScenario {
     // the world holds the definitions for the before, after, and step definitions
     private $aWorld;
 
+    static private $oMock;
+
     /**
      * @param array $_aWorld
      * @return void
      */
     function __construct($_aWorld = array()) {
         $this->aWorld = $_aWorld;
+    }
+
+    /**
+     * @static
+     * @param  $aWorld
+     * @return CucumberScenario
+     */
+    static function getInstance($aWorld) {
+        if (self::$oMock) {
+            return self::$oMock;
+        } else {
+            return new CucumberScenario($aWorld);
+        }
+    }
+
+    /**
+     * @static
+     * @param  $oMock
+     * @return void
+     */
+    static function setInstance($oMock) {
+        self::$oMock = $oMock;
     }
 
     /**

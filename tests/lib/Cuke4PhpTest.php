@@ -68,5 +68,19 @@ public function stepThisIsAStepWithAPystring($sString) {
         self::assertEquals($sExpected, $sActual);
     }
 
+    function testBeginScenarioShouldInvokeBeforeHooks() {
+        $oMockScenario = $this->getMock('CucumberScenario', array('invokeBeforeHooks'));
+        $oMockScenario->expects(self::once())->method('invokeBeforeHooks');
+        CucumberScenario::setInstance($oMockScenario);
+        $this->oCuke4Php->beginScenario(array());
+    }
+
+    function testEndScenarioShouldInvokeAfterHooks() {
+        $oMockScenario = $this->getMock('CucumberScenario', array('invokeAfterHooks'));
+        $oMockScenario->expects(self::once())->method('invokeAfterHooks');
+        $this->oCuke4Php->setScenario($oMockScenario);
+        $this->oCuke4Php->endScenario(array());
+    }
+
 }
 ?>
