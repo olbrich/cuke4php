@@ -165,7 +165,9 @@ class Cuke4Php {
         return $oResult;
     }
 
-    /*
+    /**
+     * @param  $aSnippet
+     * @return array
      * return a template for an undefined step
      */
     function snippetText($aSnippet) {
