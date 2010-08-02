@@ -28,12 +28,11 @@ class Cuke4Php {
 
         $aPredefinedClasses = get_declared_classes();
         // TODO: Load files in support path before step definitions
-        print "Loading step definitions from $_sFeaturePath\n";
         foreach (glob("$_sFeaturePath/**/*.php") as $sFilename) {
             require_once $sFilename;
-            require_once $sFilename;
         }
-        $this->aStepClasses = array_values(array_diff(get_declared_classes(), $aPredefinedClasses));
+        //$this->aStepClasses = array_values(array_diff(get_declared_classes(), $aPredefinedClasses));
+        $this->aStepClasses = CucumberSteps::getSubclasses();
         foreach ($this->aStepClasses as $sClass) {
             $oReflection = new ReflectionClass($sClass);
             $aMethods = $oReflection->getMethods();

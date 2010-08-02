@@ -20,6 +20,16 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
         self::markTestIncomplete($sMessage);
     }
 
+    static function getSubclasses()
+    {
+        $aClasses = array();
+        foreach (get_declared_classes() as $sClassName)
+        {
+            if (is_subclass_of($sClassName, 'CucumberSteps'))
+                    $aClasses[] = $sClassName;
+        }
+        return $aClasses;
+    }
 }
 
 ?>

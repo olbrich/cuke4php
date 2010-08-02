@@ -8,7 +8,7 @@ class TestException extends Exception {
     }
 }
 
-require_once(dirname(__FILE__) . "/../features/step_definitions/TestSteps.php");
+require_once(dirname(__FILE__) . "/../../features/step_definitions/TestSteps.php");
 
 class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
 

@@ -1,6 +1,7 @@
 <?php
 
 class TestSteps extends CucumberSteps {
+
     /**
      * Given /^successful$/
      **/

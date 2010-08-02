@@ -7,7 +7,7 @@ class Cuke4PhpTest extends PHPUnit_Framework_TestCase {
     public $oCuke4Php;
 
     function setup() {
-        $this->oCuke4Php = new Cuke4Php(dirname(__FILE__) . "/../features");
+        $this->oCuke4Php = new Cuke4Php(dirname(__FILE__) . "/../../features");
     }
 
     function testSnippetTextReturnsSnippet() {
@@ -80,6 +80,22 @@ public function stepThisIsAStepWithAPystring($sString) {
         $oMockScenario->expects(self::once())->method('invokeAfterHooks');
         $this->oCuke4Php->setScenario($oMockScenario);
         $this->oCuke4Php->endScenario(array());
+    }
+
+    function testStepMatchesShouldReturnEmptySetWhenNoMatches() {
+        self::assertEquals(array('success',array()), $this->oCuke4Php->stepMatches("random step"));
+    }
+
+    function testStepMatchesShouldReturnMatches() {
+        self::assertEquals(array('success',array(
+            array('id' => 0, 'args' => array(), 'source' => realpath(dirname(__FILE__) . '/../../features/step_definitions/TestSteps.php') . ":8")            
+        )), $this->oCuke4Php->stepMatches("successful"));
+    }
+
+    function testStepMatchesShouldReturnMatchesWithParameters() {
+        self::assertEquals(array('success',array(
+            array('id' => 6, 'args' => array(), 'source' => realpath(dirname(__FILE__) . '/../../features/step_definitions/TestSteps.php') . ":48")
+        )), $this->oCuke4Php->stepMatches('"arg1" not equal to "arg2"'));
     }
 
 }
