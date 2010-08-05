@@ -3,6 +3,20 @@ set_time_limit(0);
 require_once "Cucumber.php";
 
 /**
+ * @param string $pattern
+ * @param int $flags
+ * @param string $path
+ * @return array
+ */
+function rglob($pattern='*', $flags = 0, $path='')
+{
+    $paths=glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
+    $files=glob($path.$pattern, $flags);
+    foreach ($paths as $path) { $files=array_merge($files,rglob($pattern, $flags, $path)); }
+    return $files;
+}
+
+/**
  *  Cuke4Php implements the Cucumber wire protocol for PHP
  *
  * http://wiki.github.com/aslakhellesoy/cucumber/wire-protocol
@@ -28,11 +42,13 @@ class Cuke4Php {
 
         $aPredefinedClasses = get_declared_classes();
         // TODO: Load files in support path before step definitions
-        foreach (glob("$_sFeaturePath/**/*.php") as $sFilename) {
+        var_dump($_sFeaturePath, rglob("*.php", 0, $_sFeaturePath));
+        foreach (rglob("*.php", 0,  $_sFeaturePath) as $sFilename) {
+            var_dump($sFilename);
             require_once $sFilename;
         }
-        //$this->aStepClasses = array_values(array_diff(get_declared_classes(), $aPredefinedClasses));
         $this->aStepClasses = CucumberSteps::getSubclasses();
+        var_dump($this->aStepClasses);
         foreach ($this->aStepClasses as $sClass) {
             $oReflection = new ReflectionClass($sClass);
             $aMethods = $oReflection->getMethods();
