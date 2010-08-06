@@ -1,6 +1,6 @@
 <?php
 set_time_limit(0);
-require_once "Cucumber.php";
+
 
 /**
  * @param string $pattern
@@ -42,13 +42,11 @@ class Cuke4Php {
 
         $aPredefinedClasses = get_declared_classes();
         // TODO: Load files in support path before step definitions
-        var_dump($_sFeaturePath, rglob("*.php", 0, $_sFeaturePath));
         foreach (rglob("*.php", 0,  $_sFeaturePath) as $sFilename) {
-            var_dump($sFilename);
             require_once $sFilename;
         }
+        require_once "Cucumber.php";
         $this->aStepClasses = CucumberSteps::getSubclasses();
-        var_dump($this->aStepClasses);
         foreach ($this->aStepClasses as $sClass) {
             $oReflection = new ReflectionClass($sClass);
             $aMethods = $oReflection->getMethods();
