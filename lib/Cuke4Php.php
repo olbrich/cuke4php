@@ -41,7 +41,6 @@ class Cuke4Php {
         }
 
         $aPredefinedClasses = get_declared_classes();
-        // TODO: Load files in support path before step definitions
         foreach (rglob("*.php", 0,  $_sFeaturePath . "/support") as $sFilename) {
             require_once $sFilename;
         }
