@@ -48,6 +48,34 @@ class TestSteps extends CucumberSteps {
     public function stepNotEqual($arg1,$arg2) {
         self::assertTrue($arg1 !== $arg2);
     }
+		
+		/**
+		 * @one
+		 */
+		public function afterWithOneTag() {
+			
+		}
+		
+		/**
+		 * 
+		 */
+		public function afterWithNoTags() {
+			
+		}
+		
+		/**
+		 * @one
+		 */
+		public function beforeWithOneTag() {
+			
+		}
+		
+		/**
+		 * 
+		 */
+		public function beforeWithNoTags() {
+			
+		}
 
 }
 
