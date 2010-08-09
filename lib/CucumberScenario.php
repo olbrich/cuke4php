@@ -49,7 +49,7 @@ class CucumberScenario {
     function invokeBeforeHooks($aTags) {
         foreach ($this->aWorld['before'] as $aBeforeHook) {
             if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
-                $oStep = CucumberHook::getInstance($aBeforeHook['class'], $this->aGlobals);
+                $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
                 $oResult = $oStep->invoke($aBeforeHook['method']);
                 if ($oResult === false) {
                     return array('failure');
@@ -67,7 +67,7 @@ class CucumberScenario {
     function invokeAfterHooks($aTags) {
         foreach ($this->aWorld['after'] as $aAfterHook) {
             if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
-                $oStep = CucumberHook::getInstance($aAfterHook['class'], $this->aGlobals);
+                $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
                 $oResult = $oStep->invoke($aAfterHook['method']);
                 if ($oResult === false) {
                     return array('failure');

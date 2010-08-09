@@ -11,7 +11,7 @@ namespace :tests do
 
   desc "run phpunit tests"
   task :phpunit do
-    sh "./PHPUnit/phpunit.php tests/"
+    sh "phpunit tests/"
   end
 
   task :all => [:phpunit, :features]

@@ -3,20 +3,6 @@ set_time_limit(0);
 
 
 /**
- * @param string $pattern
- * @param int $flags
- * @param string $path
- * @return array
- */
-function rglob($pattern='*', $flags = 0, $path='')
-{
-    $paths=glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
-    $files=glob($path.$pattern, $flags);
-    foreach ($paths as $path) { $files=array_merge($files,rglob($pattern, $flags, $path)); }
-    return $files;
-}
-
-/**
  *  Cuke4Php implements the Cucumber wire protocol for PHP
  *
  * http://wiki.github.com/aslakhellesoy/cucumber/wire-protocol
@@ -27,7 +13,7 @@ class Cuke4Php {
     private $oSocket;
     private $oScenario;
     private $aStepClasses;
-    private $aWorld = array(
+    public $aWorld = array(
         'steps' => array(),
         'before' => array(),
         'after' => array()
@@ -40,12 +26,11 @@ class Cuke4Php {
             $this->iPort = 16816;
         }
 
-        $aPredefinedClasses = get_declared_classes();
-        foreach (rglob("*.php", 0,  $_sFeaturePath . "/support") as $sFilename) {
+        foreach (self::rglob("*.php", 0,  $_sFeaturePath . "/support") as $sFilename) {
             require_once $sFilename;
         }
         require_once "Cucumber.php";
-        foreach (rglob("*.php", 0,  $_sFeaturePath) as $sFilename) {
+        foreach (self::rglob("*.php", 0,  $_sFeaturePath . "/step_definitions") as $sFilename) {
             require_once $sFilename;
         }
         $this->aStepClasses = CucumberSteps::getSubclasses();
@@ -79,6 +64,22 @@ class Cuke4Php {
             }
         }
     }
+
+		/**
+		 * @param string $pattern
+		 * @param int $flags
+		 * @param string $path
+		 * @return array
+		 * recursive glob utility function
+		 */
+		static function rglob($sPattern='*', $iFlags = 0, $sPath='')
+		{
+		    $aPaths=glob($sPath.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
+		    $aFiles=glob($sPath.$sPattern, $iFlags);
+		    foreach ($aPaths as $sPath) { $aFiles=array_merge($aFiles,self::rglob($sPattern, $iFlags, $sPath)); }
+		    return $aFiles;
+		}
+
 
     /**
      * @param  $oScenario
