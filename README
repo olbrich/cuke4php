@@ -17,3 +17,5 @@ This project utilizes PHPUnit because it has a robust set of assertions, has goo
 
 This project was developed against the 5.2.x versions of PHP, to ensure compatibility with older PHP projects.
 
+Support:
+	Support for this project was provided by iContact, inc.  (http://www.icontact.com)
