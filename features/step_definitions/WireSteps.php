@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @package Cuke4Php
+ */
+/**
+ * @package Cuke4Php
+ */ 
 class WireSteps extends CucumberSteps {
 
     /**

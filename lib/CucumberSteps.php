@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @package Cuke4Php
+ */
+ 
 /**
  * Base class that all cucumber steps should derive from
  *
@@ -8,6 +11,7 @@
  *
  * This class also inherits PHPUnit assertions, so those can all be used within the context of a
  * step.  Data providers probably don't work, and really should not be used in any case.
+ * @package Cuke4Php
  */
 class CucumberSteps extends PHPUnit_Framework_Assert {
     static private $aMocks = array();
@@ -34,7 +38,7 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
 
     /**
      * @param  $sMethod
-     * @return
+     * @return mixed
      */
     function invoke($sMethod) {
         return $this->$sMethod();

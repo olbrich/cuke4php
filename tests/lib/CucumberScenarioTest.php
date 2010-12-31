@@ -1,7 +1,18 @@
 <?php
+/**
+ * @package Cuke4Php
+ */
 
+/**
+ * load Cucumber php framework
+ */
 require_once dirname(__FILE__) . "/../../lib/Cucumber.php";
 
+/**
+ * class TestException
+ * this class is used during the tests to mock exceptions.
+ * @package Cuke4Php
+ */
 class TestException extends Exception {
     public function __toString() {
         return "TestException";
@@ -10,6 +21,10 @@ class TestException extends Exception {
 
 require_once(dirname(__FILE__) . "/../../features/step_definitions/TestSteps.php");
 
+/**
+ * class CucumberScenarioTest
+ * @package Cuke4Php
+ */
 class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
 
     public $oScenario;

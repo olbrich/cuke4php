@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'rake'
+require "yard"
+require "city"
 
 task :default => :features
 
@@ -28,4 +30,16 @@ namespace :server do
     task :stop do
       sh "echo 'quit' | nc #{ENV['SERVER'] || 'localhost'} #{ENV['PORT'] || 16816}"
     end
+end
+
+namespace :doc do
+
+  task :default => [:phpdoc]
+
+  desc "Generate PhpDocs -- requires PhpDocumentor"
+  task :phpdoc do
+    sh "rm -rf phpdoc/"
+    sh "phpdoc -f *.php -d ./lib -t phpdoc/ --title Cuke4Php -dn Cuke4Php -dc Cuke4Php -it @one,@two,@wire"
+  end
+
 end

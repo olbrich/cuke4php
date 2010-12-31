@@ -1,6 +1,18 @@
 <?php
+/**
+ * @package Cuke4Php
+ */
+
+/**
+ * load dependencies
+ */
 require_once "CucumberSteps.php";
 
+/**
+ * class CucumberScenario
+ * Defines a Cucumber Scenario
+ * @package Cuke4Php
+ */
 class CucumberScenario {
 
     // provide a place we can store data

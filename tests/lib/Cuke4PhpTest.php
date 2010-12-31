@@ -1,7 +1,16 @@
 <?php
-
+/**
+ * @package Cuke4Php
+ */
+ 
+/**
+ * load Cucumber framework
+ */
 require_once dirname(__FILE__) . "/../../lib/Cucumber.php";
 
+/**
+ * @package Cuke4Php
+ */
 class Cuke4PhpTest extends PHPUnit_Framework_TestCase {
 
     public $oCuke4Php;

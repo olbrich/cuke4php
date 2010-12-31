@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package Cuke4Php
+ */
+
 set_time_limit(0);
 
 
@@ -6,6 +10,7 @@ set_time_limit(0);
  *  Cuke4Php implements the Cucumber wire protocol for PHP
  *
  * http://wiki.github.com/aslakhellesoy/cucumber/wire-protocol
+ * @package Cuke4Php
  */
 class Cuke4Php {
     public $iPort;
