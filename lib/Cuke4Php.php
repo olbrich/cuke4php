@@ -57,7 +57,9 @@ class Cuke4Php {
                     continue;
                 }
                 preg_match("/(@.+)/im", $sComment, $aMatches);
-                $aMethod['tags'] = explode(" ", str_replace("@", "", $aMatches[1]));
+                if (array_key_exists(1, $aMatches)) {
+                    $aMethod['tags'] = explode(" ", str_replace("@", "", $aMatches[1]));
+                }
                 if (substr($oMethod->name, 0, 6) === "before") {
                     $this->aWorld['before'][] = $aMethod;
                     continue;
@@ -77,8 +79,7 @@ class Cuke4Php {
 		 * @return array
 		 * recursive glob utility function
 		 */
-		static function rglob($sPattern='*', $iFlags = 0, $sPath='')
-		{
+		static function rglob($sPattern='*', $iFlags = 0, $sPath='') {
 		    $aPaths=glob($sPath.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
 		    $aFiles=glob($sPath.$sPattern, $iFlags);
 		    foreach ($aPaths as $sPath) { $aFiles=array_merge($aFiles,self::rglob($sPattern, $iFlags, $sPath)); }
@@ -122,6 +123,7 @@ class Cuke4Php {
     }
 
     function process($sInput) {
+        echo "$sInput\n";
         switch ($sInput) {
             case "quit":
             case "bye":
@@ -132,7 +134,10 @@ class Cuke4Php {
             default:
                 $aCommand = json_decode($sInput);
                 $sAction = $aCommand[0];
-                $sData = $aCommand[1];
+                $sData = NULL;
+                if (array_key_exists(1, $aCommand)) {
+                    $sData = $aCommand[1];
+                }
                 switch ($sAction) {
                     case 'begin_scenario':
                         return $this->beginScenario($sData->tags);

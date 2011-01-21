@@ -5,7 +5,7 @@
  * @package Cuke4Php
  */
 
-set_include_path(realpath(dirname(__FILE__) . "/../PHPUnit") . ":" . get_include_path());
+require_once 'PHPUnit/Framework.php';
 /**
  * load the Cuke4Php server
  */
