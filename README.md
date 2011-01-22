@@ -10,29 +10,25 @@ Install
 -------
 To install Cuke4Php, follow these steps:
 
-* git clone git://github.com/olbrich/cuke4php.git
-* add or make sure that cuke4php is in your path
-* ensure that the 'cuke4php' bash script is executable ('chmod +x cuke4php' on *nix systems)
+* clone
+* install dependencies with bundler
+* run rake build
+* install gem under pkg/ folder
 
 Usage
 -----
-* run 'cuke4php path/to/features' from the command line
-* make sure your cucumber features has a 'Cuke4Php.wire' file containing the appropriate information (see cuke4php/features/step_definitions for an example).
-* invoke cucumber from your project, it should talk to the Cuke4Php server when it can't find a native ruby step definition
-
-Note: you will need to restart the Cuke4Php server to pick up any changes.
+* run 'cucumber_php path/to/features' from the command line
+* make sure your cucumber features has a 'Cuke4Php.wire' file containing the appropriate information (copy the one in cuke4php/features/step_definitions)
+* you can write both Ruby and PHP steps
 
 Roadmap
 -------
 Things coming soon:
-  * packaging into a ruby gem to simplify installation
-  * a simplified way to start the Cuke4Php server, run features, and then terminate the server for a single run
-  * a way to dynamically assign the port the Cuke4Php server uses, which will allow running multiple concurrent Cuke4Php servers
+* a way to dynamically assign the port the Cuke4Php server uses, which will allow running multiple concurrent Cuke4Php servers
 
 Dependencies
 ------------
-* Cucumber (see http://cukes.info)
-* PHPUnit (see http://www.phpunit.de/)
+* PHPUnit >= 3.5 (see http://www.phpunit.de/)
 
 Goals
 -----
