@@ -6,6 +6,6 @@
 /**
  * load the PHPUnit framework
  */ 
-require_once "PHPUnit/Framework.php";
+require_once "PHPUnit/Autoload.php";
 
 ?>

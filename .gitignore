@@ -1,2 +1,4 @@
 .idea
 ._*
+pkg
+Gemfile.lock

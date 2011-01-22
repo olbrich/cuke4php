@@ -5,7 +5,7 @@
  * @package Cuke4Php
  */
 
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Autoload.php';
 /**
  * load the Cuke4Php server
  */

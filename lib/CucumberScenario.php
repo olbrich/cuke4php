@@ -60,13 +60,14 @@ class CucumberScenario {
      */
     function invokeBeforeHooks($aTags) {
         foreach ($this->aWorld['before'] as $aBeforeHook) {
-            if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
-                $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
-                $oResult = $oStep->invoke($aBeforeHook['method']);
-                if ($oResult === false) {
-                    return array('failure');
-                }
-            }
+			if (array_key_exists('tags', $aBeforeHook))
+            	if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
+                    $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
+                    $oResult = $oStep->invoke($aBeforeHook['method']);
+                    if ($oResult === false) {
+                        return array('failure');
+                    }
+            	}
         }
         return array('success');
     }
@@ -78,13 +79,14 @@ class CucumberScenario {
      */
     function invokeAfterHooks($aTags) {
         foreach ($this->aWorld['after'] as $aAfterHook) {
-            if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
-                $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
-                $oResult = $oStep->invoke($aAfterHook['method']);
-                if ($oResult === false) {
-                    return array('failure');
-                }
-            }
+			if (array_key_exists('tags', $aAfterHook))
+	            if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
+	                $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
+	                $oResult = $oStep->invoke($aAfterHook['method']);
+	                if ($oResult === false) {
+	                    return array('failure');
+	                }
+	            }
         }
         return array('success');
     }

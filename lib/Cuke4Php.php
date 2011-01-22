@@ -108,7 +108,6 @@ class Cuke4Php {
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
             socket_getpeername($connection, $raddr, $rport);
-            print "Received Connection from $raddr:$rport\n";
             while ($this->bRun && ($input = socket_read($connection, 1024 * 4))) {
                 $data = trim($input);
                 if ($data !== "") {
@@ -116,14 +115,12 @@ class Cuke4Php {
                     socket_write($connection, $output);
                 }
             }
-            print "closing connection\n";
             socket_close($connection);
             sleep(1);
         }
     }
 
     function process($sInput) {
-        echo "$sInput\n";
         switch ($sInput) {
             case "quit":
             case "bye":
@@ -232,7 +229,7 @@ class Cuke4Php {
         $sMethodBody = <<<EOT
 
 /**
-* {$aSnippet->step_keyword}/^$sStepName$/
+* {$aSnippet->step_keyword} /^$sStepName$/
 **/
 public function $sMethodName($sParams) {
     self::markPending();

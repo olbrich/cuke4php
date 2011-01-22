@@ -25,11 +25,9 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
         self::markTestIncomplete($sMessage);
     }
 
-    public static function getSubclasses()
-    {
+    public static function getSubclasses() {
         $aClasses = array();
-        foreach (get_declared_classes() as $sClassName)
-        {
+        foreach (get_declared_classes() as $sClassName) {
             if (is_subclass_of($sClassName, 'CucumberSteps') && (stripos($sClassName,"Mock") === false))
                     $aClasses[] = $sClassName;
         }
@@ -70,7 +68,7 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
      * or an instance of the appropriate step class with the globals initialized
      */
     static function getInstance($sClass, $aGlobals) {
-        if (self::$aMocks[$sClass]) {
+        if (array_key_exists($sClass, self::$aMocks) && self::$aMocks[$sClass]) {
             return self::$aMocks[$sClass];
         } else {
             return new $sClass($aGlobals);
