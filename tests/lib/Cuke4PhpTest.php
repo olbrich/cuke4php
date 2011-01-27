@@ -22,10 +22,12 @@ class Cuke4PhpTest extends PHPUnit_Framework_TestCase {
     function testSnippetTextReturnsSnippet() {
         $oSnippet = new StdClass;
         $oSnippet->step_name = "this is a step name";
+				$oSnippet->multiline_arg_class = "";
+				$oSnippet->step_keyword = "Given";
         $sActual = $this->oCuke4Php->snippetText($oSnippet);
         $sExpected = array('success',"
 /**
-* /^this is a step name$/
+* Given /^this is a step name$/
 **/
 public function stepThisIsAStepName() {
     self::markPending();
@@ -36,10 +38,12 @@ public function stepThisIsAStepName() {
     function testSnippetTextReturnsSnippetWithParameters() {
         $oSnippet = new StdClass;
         $oSnippet->step_name = 'this is a step with parameter "param1"';
+				$oSnippet->multiline_arg_class = "";
+				$oSnippet->step_keyword = "Given";
         $sActual = $this->oCuke4Php->snippetText($oSnippet);
         $sExpected = array('success','
 /**
-* /^this is a step with parameter "([^"]*)"$/
+* Given /^this is a step with parameter "([^"]*)"$/
 **/
 public function stepThisIsAStepWithParameterParameter($arg1) {
     self::markPending();
@@ -51,10 +55,11 @@ public function stepThisIsAStepWithParameterParameter($arg1) {
         $oSnippet = new StdClass;
         $oSnippet->step_name = 'this is a step with a table:';
         $oSnippet->multiline_arg_class = "Cucumber::Ast::Table";
+				$oSnippet->step_keyword = "Given";
         $sActual = $this->oCuke4Php->snippetText($oSnippet);
         $sExpected = array('success','
 /**
-* /^this is a step with a table\:$/
+* Given /^this is a step with a table\:$/
 **/
 public function stepThisIsAStepWithATable($aTable) {
     self::markPending();
@@ -66,10 +71,11 @@ public function stepThisIsAStepWithATable($aTable) {
         $oSnippet = new StdClass;
         $oSnippet->step_name = 'this is a step with a pystring:';
         $oSnippet->multiline_arg_class = "Cucumber::Ast::PyString";
+				$oSnippet->step_keyword = "Given";
         $sActual = $this->oCuke4Php->snippetText($oSnippet);
         $sExpected = array('success','
 /**
-* /^this is a step with a pystring\:$/
+* Given /^this is a step with a pystring\:$/
 **/
 public function stepThisIsAStepWithAPystring($sString) {
     self::markPending();
@@ -97,13 +103,13 @@ public function stepThisIsAStepWithAPystring($sString) {
 
     function testStepMatchesShouldReturnMatches() {
         self::assertEquals(array('success',array(
-            array('id' => 0, 'args' => array(), 'source' => realpath(dirname(__FILE__) . '/../../features/step_definitions/TestSteps.php') . ":8")            
+            array('id' => 0, 'args' => array(), 'source' => realpath(dirname(__FILE__) . '/../../features/step_definitions/TestSteps.php') . ":14")            
         )), $this->oCuke4Php->stepMatches("successful"));
     }
 
     function testStepMatchesShouldReturnMatchesWithParameters() {
         self::assertEquals(array('success',array(
-            array('id' => 6, 'args' => array(), 'source' => realpath(dirname(__FILE__) . '/../../features/step_definitions/TestSteps.php') . ":48")
+            array('id' => 6, 'args' => array(), 'source' => realpath(dirname(__FILE__) . '/../../features/step_definitions/TestSteps.php') . ":54")
         )), $this->oCuke4Php->stepMatches('"arg1" not equal to "arg2"'));
     }
 
