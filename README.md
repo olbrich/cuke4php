@@ -10,15 +10,17 @@ Install
 -------
 To install Cuke4Php, follow these steps:
 
-* clone
-* install dependencies with bundler
-* run rake build
-* install gem under pkg/ folder
-
+	[sudo] gem install cuke4php
+	
 Usage
 -----
 * run 'cuke4php path/to/features' from the command line
-* make sure your cucumber features has a 'Cuke4Php.wire' file containing the appropriate information (copy the one in cuke4php/features/step_definitions)
+* all parameters get passed to cucumber when it starts, but the last parameter on the command line should be the path to your features directory
+* make sure your cucumber features has a 'Cuke4Php.wire' file in step_definitions containing something like:
+
+		host: localhost
+		port: 16816
+	
 * you can write both Ruby and PHP steps
 * you should load phpunit from a file in step_definitions/support/
 
@@ -46,9 +48,9 @@ This project was developed against the 5.2.x versions of PHP, to ensure compatib
 
 Support
 -------
-	Support for this project was provided by iContact, inc.  (http://www.icontact.com)
+Support for this project was provided by iContact, inc.  (http://www.icontact.com)
 
 Contributors
 ------------
-	Kevin Olbrich, Ph.D. (kevin.olbrich+cuke4php@gmail.com)
-	Alessandro Dal Grande (aledelgrande@gmail.com)
+* Kevin Olbrich, Ph.D. (kevin.olbrich+cuke4php@gmail.com)
+* Alessandro Dal Grande (aledelgrande@gmail.com)
