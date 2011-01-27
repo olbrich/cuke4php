@@ -60,7 +60,7 @@ end
 
 desc "Run Cucumber features for Cuke4php"
 task :features do
-  sh "bin/cucumber_php -p #{ENV['PROFILE'] || 'default'} features"
+  sh "bin/cuke4php -p #{ENV['PROFILE'] || 'default'} features"
 end
 
 desc "Generate PhpDocs -- requires PhpDocumentor"
