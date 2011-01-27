@@ -97,13 +97,12 @@ class Cuke4Php {
 
     function __destruct() {
         if (isset($this->oSocket) && $this->oSocket) {
-            print "Closing socket\n";
             socket_close($this->oSocket);
         }
     }
 
     function run() {
-        print "Listening to port $this->iPort\n";
+        print "Cuke4Php listening on port $this->iPort\n";
         $this->oSocket = socket_create_listen($this->iPort);
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
@@ -112,7 +111,9 @@ class Cuke4Php {
                 $data = trim($input);
                 if ($data !== "") {
                     $output = json_encode($this->process($data)) . "\n";
-                    socket_write($connection, $output);
+										if ($this->bRun) {
+	                    socket_write($connection, $output);											
+										}
                 }
             }
             socket_close($connection);
@@ -125,8 +126,7 @@ class Cuke4Php {
             case "quit":
             case "bye":
                 $this->bRun = false;
-                print "Quitting\n";
-                return array('failure');
+                return "Complete";
                 break;
             default:
                 $aCommand = json_decode($sInput);
