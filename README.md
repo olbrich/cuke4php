@@ -17,19 +17,26 @@ To install Cuke4Php, follow these steps:
 
 Usage
 -----
-* run 'cucumber_php path/to/features' from the command line
+* run 'cuke4php path/to/features' from the command line
 * make sure your cucumber features has a 'Cuke4Php.wire' file containing the appropriate information (copy the one in cuke4php/features/step_definitions)
 * you can write both Ruby and PHP steps
+* you should load phpunit from a file in step_definitions/support/
 
 Roadmap
 -------
-Things coming soon:
 
-* a way to dynamically assign the port the Cuke4Php server uses, which will allow running multiple concurrent Cuke4Php servers
+### bin/cuke4php
+
+* support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
+* autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
+
+### Rakefile
+
+* once the patch for erb templating in .wire files is released, we should set a minimum version for it
 
 Dependencies
 ------------
-* PHPUnit >= 3.5 (see http://www.phpunit.de/)
+* PHPUnit >= 3.0 (see http://www.phpunit.de/)
 
 Goals
 -----
@@ -37,5 +44,11 @@ This project utilizes PHPUnit because it has a robust set of assertions, has goo
 
 This project was developed against the 5.2.x versions of PHP, to ensure compatibility with older PHP projects.
 
-Support:
+Support
+-------
 	Support for this project was provided by iContact, inc.  (http://www.icontact.com)
+
+Contributors
+------------
+	Kevin Olbrich, Ph.D. (kevin.olbrich+cuke4php@gmail.com)
+	Alessandro Dal Grande (aledelgrande@gmail.com)
