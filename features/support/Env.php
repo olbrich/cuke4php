@@ -4,8 +4,10 @@
  */
  
 /**
- * load the PHPUnit framework
+ * load the PHPUnit framework, try to load the new version first
+ * then the older one.
  */ 
-require_once "PHPUnit/Autoload.php";
+	@include_once "PHPUnit/Autoload.php";	
+	@include_once "PHPUnit/Framework.php";
 
 ?>
