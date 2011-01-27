@@ -9,7 +9,9 @@
 DIRECTORY=$(cd `dirname $0` && pwd)
 CUKE4PHP_PORT=16816
 
-$DIRECTORY/../php_bin/cuke4php_server $1 &
+# get last argument passed in, this is not ideal as the profile can specify the feature path
+FEATURE_PATH=${@: -1}
+$DIRECTORY/../php_bin/cuke4php_server $FEATURE_PATH &
 sleep 1
 cucumber $*
 echo 'quit' | nc localhost $CUKE4PHP_PORT
