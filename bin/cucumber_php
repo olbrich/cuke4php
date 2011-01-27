@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-require 'rake'
-
-sh "#{File.dirname(__FILE__)}/../php_bin/cuke4php #{ARGV.last ? ARGV.last : 'features'} &"
-sleep 1
-sh "cucumber #{ARGV.join(' ')}"
-sh "echo 'quit' | nc localhost 16816"

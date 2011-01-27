@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# TODO: support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
+
+# TODO: autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
+# see https://github.com/olbrich/cucumber/commit/0c11d206e08e8d5647e03bf78be93723d59529ef
+
+
+DIRECTORY=$(cd `dirname $0` && pwd)
+CUKE4PHP_PORT=16816
+
+$DIRECTORY/../php_bin/cuke4php_server $1 &
+sleep 1
+cucumber $*
+echo 'quit' | nc localhost $CUKE4PHP_PORT
