@@ -11,10 +11,6 @@ begin
     gem.email = ["kevin.olbrich+cuke4php@gmail.com", "aledalgrande@gmail.com"]
     gem.homepage = "http://github.com/olbrich/cuke4php"
     gem.executables = 'cuke4php'
-    gem.add_dependency('cucumber')
-    # TODO: once the patch for erb templating in the .wire files is released, we should set a minimum version for it
-    gem.add_development_dependency('bundler')
-    gem.add_development_dependency('jeweler')
     gem.files.exclude 'phpdoc'
     gem.has_rdoc = false
     gem.requirements << "PHP 5.2+"
@@ -41,7 +37,6 @@ rescue LoadError
 end
 
 require 'cucumber/rake/task'
-#Cucumber::Rake::Task.new(:features)
 
 task :default => [:features, :phpunit]
 

@@ -6,3 +6,4 @@ group :development do
 end
 
 gem 'cucumber'
+# TODO: once the patch for erb templating in the .wire files is released, we should set a minimum version for it

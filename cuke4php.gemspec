@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
     "tests/lib/CucumberScenarioTest.php",
     "tests/lib/Cuke4PhpTest.php"
   ]
+  s.has_rdoc = false
   s.homepage = %q{http://github.com/olbrich/cuke4php}
   s.post_install_message = %q{********************************************************************************
 
@@ -69,23 +70,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<cucumber>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<cucumber>, [">= 0"])
-      s.add_development_dependency(%q<bundler>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
       s.add_dependency(%q<cucumber>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
-      s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<cucumber>, [">= 0"])
-      s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
     s.add_dependency(%q<cucumber>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
-    s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<cucumber>, [">= 0"])
-    s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
