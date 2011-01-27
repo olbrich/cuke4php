@@ -11,7 +11,9 @@ Install
 To install Cuke4Php, follow these steps:
 
 	[sudo] gem install cuke4php
-	
+
+Note: I realize the irony inherent in a gem being used to distribute PHP code.
+
 Usage
 -----
 * run 'cuke4php path/to/features' from the command line

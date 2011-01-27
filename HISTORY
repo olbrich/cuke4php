@@ -1,0 +1,5 @@
+2011-01-27 -- 0.9.0
+  * first gem release
+  
+2011-01-27 -- 0.9.1
+  * allow cuke4php to accept a feature filename instead of a path name so users can run just one feature file at a time

@@ -25,6 +25,8 @@ class Cuke4Php {
     );
 
     function __construct($_sFeaturePath, $_iPort = 16816) {
+        $_sFeaturePath = dirname($_sFeaturePath);
+        
         if ($_iPort > 0) {
             $this->iPort = $_iPort;
         } else {
