@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "bin/cuke4php",
     "cucumber.yml",
+    "cuke4php.gemspec",
     "features/Cuke4Php.feature",
     "features/step_definitions/Cuke4Php.wire",
     "features/step_definitions/TestSteps.php",
