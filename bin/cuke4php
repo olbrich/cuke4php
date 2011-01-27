@@ -1,17 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
 # TODO: support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
 
 # TODO: autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
 # see https://github.com/olbrich/cucumber/commit/0c11d206e08e8d5647e03bf78be93723d59529ef
 
+# Note that changing the port number currently requires updating the Cuke4Php.wire file in your project's step_definitions
+# or cucumber will look for the cuke4php server on the wrong port.
+CUKE4PHP_PORT=ENV['CUKE4PHP_PORT'] || 16816
 
-DIRECTORY=$(cd `dirname $0` && pwd)
-CUKE4PHP_PORT=16816
-
-# get last argument passed in, this is not ideal as the profile can specify the feature path
-FEATURE_PATH=${@: -1}
-$DIRECTORY/../php_bin/cuke4php_server $FEATURE_PATH &
+server = fork do
+  exec "#{File.dirname(__FILE__)}/../php_bin/cuke4php_server -p #{CUKE4PHP_PORT} #{ARGV.last ? ARGV.last : 'features'}"  
+end
+#Process.detach(pid)
 sleep 1
-cucumber $*
-echo 'quit' | nc localhost $CUKE4PHP_PORT
+cucumber = fork do
+  exec "CUKE4PHP_PORT=#{CUKE4PHP_PORT} && cucumber #{ARGV.join(' ')}" #"; echo 'quit' | nc localhost #{CUKE4PHP_PORT}"
+end
+pid, status = Process.wait2(cucumber,0)
+Process.kill("TERM",server)
+exit status.exitstatus
