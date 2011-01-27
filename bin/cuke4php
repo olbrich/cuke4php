@@ -12,10 +12,9 @@ CUKE4PHP_PORT=ENV['CUKE4PHP_PORT'] || 16816
 server = fork do
   exec "#{File.dirname(__FILE__)}/../php_bin/cuke4php_server -p #{CUKE4PHP_PORT} #{ARGV.last ? ARGV.last : 'features'}"  
 end
-#Process.detach(pid)
 sleep 1
 cucumber = fork do
-  exec "CUKE4PHP_PORT=#{CUKE4PHP_PORT} && cucumber #{ARGV.join(' ')}" #"; echo 'quit' | nc localhost #{CUKE4PHP_PORT}"
+  exec "CUKE4PHP_PORT=#{CUKE4PHP_PORT} && cucumber #{ARGV.join(' ')}"
 end
 pid, status = Process.wait2(cucumber,0)
 Process.kill("TERM",server)
