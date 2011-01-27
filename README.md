@@ -22,7 +22,7 @@ Usage
 		port: 16816
 	
 * you can write both Ruby and PHP steps
-* you should load phpunit from a file in step_definitions/support/
+* you __must__ require the PHPUnit library from a file in your features/support/ directory (e.g., features/support/Env.php) for cuke4php to work
 
 Roadmap
 -------
@@ -32,13 +32,14 @@ Roadmap
 * support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
 * autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
 
-### Rakefile
+### Gemfile
 
-* once the patch for erb templating in .wire files is released, we should set a minimum version for it
+* once the patch for erb templating in .wire files in cucumber is released, we should set a minimum version for it
 
 Dependencies
 ------------
 * PHPUnit >= 3.0 (see http://www.phpunit.de/)
+* PHP 5.2.x
 
 Goals
 -----
