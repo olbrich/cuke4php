@@ -33,10 +33,15 @@ class Cuke4Php {
         } else {
             $this->iPort = 16816;
         }
-
+                
         foreach (self::rglob("*.php", 0,  $_sFeaturePath . "/support") as $sFilename) {
             require_once $sFilename;
         }
+        set_error_handler(
+          array('PHPUnit_Util_ErrorHandler', 'handleError'),
+          E_ALL | E_STRICT
+        );
+        
         require_once "Cucumber.php";
         foreach (self::rglob("*.php", 0,  $_sFeaturePath . "/step_definitions") as $sFilename) {
             require_once $sFilename;
@@ -114,9 +119,9 @@ class Cuke4Php {
                 $data = trim($input);
                 if ($data !== "") {
                     $output = json_encode($this->process($data)) . "\n";
-										if ($this->bRun) {
-	                    socket_write($connection, $output);											
-										}
+                    if ($this->bRun) {
+                      socket_write($connection, $output);
+                    }
                 }
             }
             socket_close($connection);

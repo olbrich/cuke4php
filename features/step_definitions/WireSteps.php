@@ -81,6 +81,35 @@ class WireSteps extends CucumberSteps {
 
     }
 
+    /**
+    * When /^an error "([^"]*)" with message "([^"]*)" occurs$/
+    **/
+    public function stepAnErrorParameterWithMessageParameterOccurs($sType,$sMessage) {
+      try {
+        trigger_error($sMessage, constant($sType));        
+      } catch (Exception $e) {
+        $this->aGlobals['exception'] = $e;
+      }
+    }
+
+    /**
+    * When /^an? "([^"]*)" is thrown with message "([^"]*)"$/
+    **/
+    public function stepAnExceptionParameterIsThrownWithMessageParameter($sExceptionClass,$sMessage) {
+        try {
+          throw new $$sExceptionClass($sMessage);
+        } catch (Exception $e) {
+          $this->aGlobals['exception'] = $e;
+        }
+    }
+
+    /**
+    * Then /^an? "([^"]*)" should be caught$/
+    **/
+    public function stepAParameterExceptionShouldBeCaught($sExceptionType) {
+      self::assertInstanceOf($sExceptionType, $this->aGlobals['exception']);
+    }
+
 
 }
 

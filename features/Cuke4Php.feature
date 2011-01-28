@@ -39,4 +39,17 @@ Scenario Outline: run several steps many times
     | verb       | noun      | adjective |
     | shoot      | messenger | dead      |
     | understand | meaning   | clear     |
+    
+Scenario Outline: Error Handling
+  When an error "<error_constant>" with message "<error_message>" occurs
+  Then an "<exception>" should be caught
+  
+  Examples:
+    | error_constant | error_message         | exception                       |
+    | E_USER_ERROR   | an error has occurred | PHPUnit_Framework_Error         |
+    | E_USER_WARNING | a warning message     | PHPUnit_Framework_Error_Warning |
+    | E_USER_NOTICE  | a notice message      | PHPUnit_Framework_Error_Notice  |
 
+Scenario: Exception Handling
+  When an "Exception" is thrown with message "generic exception"
+  Then an "Exception" should be caught
