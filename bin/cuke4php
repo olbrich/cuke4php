@@ -5,6 +5,8 @@
 # TODO: autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
 # see https://github.com/olbrich/cucumber/commit/0c11d206e08e8d5647e03bf78be93723d59529ef
 
+# TODO: lint check all php files before starting the cuke4php server
+
 # Note that changing the port number currently requires updating the Cuke4Php.wire file in your project's step_definitions
 # or cucumber will look for the cuke4php server on the wrong port.
 CUKE4PHP_PORT=ENV['CUKE4PHP_PORT'] || 16816
