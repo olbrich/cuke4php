@@ -3,3 +3,9 @@
   
 2011-01-27 -- 0.9.1
   * allow cuke4php to accept a feature filename instead of a path name so users can run just one feature file at a time
+  
+2011-01-27 -- 0.9.2
+  * fix a bug preventing use by just passing a directory name
+  
+2011-01-28
+  * trap and handle php errors, convert them to exceptions and then let them bubble up as usual.

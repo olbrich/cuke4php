@@ -33,6 +33,7 @@ Roadmap
 
 * support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
 * autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
+* lint check all php files in features directory before starting the cuke4php server
 
 ### Gemfile
 
