@@ -38,6 +38,8 @@ Scenario: I unset a property
   Given I store "Foo" into "Bar"
   When I unset "Bar"
   Then "Bar" should not be set
-  
+
 Scenario: I try to read a property that was not set first
-  Then "Foo" should equal "Bar"
+  Given "Foo" should not be set
+  Then getting "Foo" should raise an "PHPUnit_Framework_Error"
+  

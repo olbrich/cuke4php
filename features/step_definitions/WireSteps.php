@@ -11,7 +11,7 @@ class WireSteps extends CucumberSteps {
      * @wire
      */
     function beforeWire() {
-        $this->aGlobals['before'] = 'beforeWire';
+        $this->before = 'beforeWire';
     }
 
     function beforeAll() {
@@ -88,7 +88,7 @@ class WireSteps extends CucumberSteps {
       try {
         trigger_error($sMessage, constant($sType));        
       } catch (Exception $e) {
-        $this->aGlobals['exception'] = $e;
+        $this->exception = $e;
       }
     }
 
@@ -99,7 +99,7 @@ class WireSteps extends CucumberSteps {
         try {
           throw new $sExceptionClass($sMessage);
         } catch (Exception $e) {
-          $this->aGlobals['exception'] = $e;
+          $this->exception = $e;
         }
     }
 
@@ -107,7 +107,7 @@ class WireSteps extends CucumberSteps {
     * Then /^an? "([^"]*)" should be caught$/
     **/
     public function stepAParameterExceptionShouldBeCaught($sExceptionType) {
-      self::assertInstanceOf($sExceptionType, $this->aGlobals['exception']);
+      self::assertInstanceOf($sExceptionType, $this->exception);
     }
 
     /**
@@ -153,6 +153,20 @@ class WireSteps extends CucumberSteps {
     public function stepParameterShouldEqual($sKey,$aTable) {
       array_shift($aTable); // peel off the table column headings
       self::assertEquals($aTable, $this->$sKey);
+    }
+  
+    /**
+    * Then /^getting "([^"]*)" should raise an? "([^"]*)"$/
+    **/
+    public function stepGettingParameterShouldRaiseAnParameter($sKey, $sExceptionClass) {
+        unset($this->exception);
+        try {
+          $this->$sKey;
+          self::fail("No Exception Caught");
+        } catch (Exception $e) {
+          $this->exception = $e;
+        }
+        self::assertInstanceOf($sExceptionClass, $this->exception);
     }
     
 }
