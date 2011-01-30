@@ -113,7 +113,7 @@ class CucumberScenario {
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             return array('fail', array('message' => $e->getMessage()));
         } catch (Exception $e) {
-            return array('fail', array('exception' => $e->__toString()));            
+            return array('fail', array('message' => $e->getMessage() . " " . $e->getFile() . ":" . $e->getLine(), 'exception' => get_class($e)));            
         }
         return array('success');
     }

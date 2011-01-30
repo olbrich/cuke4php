@@ -45,7 +45,7 @@ class TestSteps extends CucumberSteps {
      * Given /^an exception is thrown$/
      */
     public function stepException() {
-        throw new TestException('Exception');
+        throw new Exception('test exception');
     }
 
     /**

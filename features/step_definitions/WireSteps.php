@@ -97,7 +97,7 @@ class WireSteps extends CucumberSteps {
     **/
     public function stepAnExceptionParameterIsThrownWithMessageParameter($sExceptionClass,$sMessage) {
         try {
-          throw new $$sExceptionClass($sMessage);
+          throw new $sExceptionClass($sMessage);
         } catch (Exception $e) {
           $this->aGlobals['exception'] = $e;
         }
@@ -109,7 +109,6 @@ class WireSteps extends CucumberSteps {
     public function stepAParameterExceptionShouldBeCaught($sExceptionType) {
       self::assertInstanceOf($sExceptionType, $this->aGlobals['exception']);
     }
-
 
 }
 

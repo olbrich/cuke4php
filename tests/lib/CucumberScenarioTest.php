@@ -149,7 +149,9 @@ class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testInvokeShouldFailWhenExceptionThrown() {
-        self::assertEquals(array('fail',array('exception' => 'TestException')), $this->oScenario->invoke(5,array()));
+        self::assertEquals(array( 'fail',array('exception' => 'Exception',
+                                  'message' => 'test exception /Users/kolbrich/local_src/cuke4php/features/step_definitions/TestSteps.php:48' )), 
+          $this->oScenario->invoke(5,array()));
     }
 
     public function testInvokeShouldSucceedWithParameters() {

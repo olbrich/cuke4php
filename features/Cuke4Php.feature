@@ -54,4 +54,4 @@ Scenario Outline: Error Handling
 @exception
 Scenario: Exception Handling
   When an "Exception" is thrown with message "generic exception"
-  Then an "Exception" should be caught
+  Then an "Exception" should be caught  
