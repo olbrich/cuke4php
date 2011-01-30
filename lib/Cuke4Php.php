@@ -139,7 +139,8 @@ class Cuke4Php {
             default:
                 $aCommand = json_decode($sInput);
                 $sAction = $aCommand[0];
-                $sData = NULL;
+                $sData = new stdClass;
+                $sData->tags = array();
                 if (array_key_exists(1, $aCommand)) {
                     $sData = $aCommand[1];
                 }

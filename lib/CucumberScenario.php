@@ -59,13 +59,17 @@ class CucumberScenario {
      * invokes all the before hooks defined that either have no tags or tags corresponding to this scenario's tags
      */
      function invokeBeforeHooks($aTags) {
+       if (is_null($aTags)) {
+         $aTags = array();
+       }
        foreach ($this->aWorld['before'] as $aBeforeHook) {
-         if (array_key_exists('tags', $aBeforeHook))
-         if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
-           $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
-           $oResult = $oStep->invoke($aBeforeHook['method']);
-           if ($oResult === false) {
-             return array('failure');
+         if (array_key_exists('tags', $aBeforeHook)) {
+           if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
+             $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
+             $oResult = $oStep->invoke($aBeforeHook['method']);
+             if ($oResult === false) {
+               return array('failure');
+             }
            }
          }
        }
@@ -78,13 +82,17 @@ class CucumberScenario {
      * invoke all after hooks defined that either have no tags, or tags that match the tags of the current scenario
      */
      function invokeAfterHooks($aTags) {
+       if (is_null($aTags)) {
+         $aTags = array();
+       }
        foreach ($this->aWorld['after'] as $aAfterHook) {
-         if (array_key_exists('tags', $aAfterHook))
-         if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
-           $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
-           $oResult = $oStep->invoke($aAfterHook['method']);
-           if ($oResult === false) {
-             return array('failure');
+         if (array_key_exists('tags', $aAfterHook)) {
+           if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
+             $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
+             $oResult = $oStep->invoke($aAfterHook['method']);
+             if ($oResult === false) {
+               return array('failure');
+             }
            }
          }
        }

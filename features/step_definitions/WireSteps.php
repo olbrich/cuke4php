@@ -110,6 +110,51 @@ class WireSteps extends CucumberSteps {
       self::assertInstanceOf($sExceptionType, $this->aGlobals['exception']);
     }
 
+    /**
+    * Given /^I store "([^"]*)" into "([^"]*)"$/
+    **/
+    public function stepIStoreParameterIntoParameter($sValue,$sKey) {
+        $this->$sKey = $sValue;
+    }
+
+
+    /**
+    * Then /^"([^"]*)" should equal "([^"]*)"$/
+    **/
+    public function stepParameterShouldEqualParameter($sKey,$sValue) {
+        self::assertEquals($sValue, $this->$sKey);
+    }
+
+    /**
+    * When /^I unset "([^"]*)"$/
+    **/
+    public function stepIUnsetParameter($sKey) {
+        unset($this->$sKey);
+    }
+
+    /**
+    * Then /^"([^"]*)" (should|should not) be set$/
+    **/
+    public function stepParameterShouldBeSet($sKey, $sShould) {
+      self::assertEquals(($sShould == "should"), isset($this->$sKey));
+    }
+    
+    /**
+    * Given /^"([^"]*)" is\:$/
+    **/
+    public function stepParameterIs($sKey,$aTable) {
+      array_shift($aTable); // peel off the table column headings
+      $this->$sKey = $aTable;
+    }
+
+    /**
+    * Then /^"([^"]*)" should equal\:$/
+    **/
+    public function stepParameterShouldEqual($sKey,$aTable) {
+      array_shift($aTable); // peel off the table column headings
+      self::assertEquals($aTable, $this->$sKey);
+    }
+    
 }
 
 ?>

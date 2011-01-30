@@ -74,6 +74,22 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
             return new $sClass($aGlobals);
         }
     }
+    
+    public function __set($sName, $sValue) {
+      $this->aGlobals[$sName] = $sValue;
+    }
+    
+    public function __get($sName) {
+      return $this->aGlobals[$sName];
+    }
+    
+    public function __unset($sName) {
+      unset($this->aGlobals[$sName]);
+    }
+    
+    public function __isset($sName) {
+      return isset($this->aGlobals[$sName]);
+    }
 }
 
 ?>
