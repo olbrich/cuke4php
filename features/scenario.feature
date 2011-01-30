@@ -33,10 +33,11 @@ Scenario: I save an array as a property
     | key  | value  |
     | key1 | value1 |
     | key2 | value2 |
-  
 
 Scenario: I unset a property
   Given I store "Foo" into "Bar"
   When I unset "Bar"
   Then "Bar" should not be set
   
+Scenario: I try to read a property that was not set first
+  Then "Foo" should equal "Bar"

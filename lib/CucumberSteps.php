@@ -80,7 +80,11 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
     }
     
     public function __get($sName) {
-      return $this->aGlobals[$sName];
+      if (array_key_exists($sName, $this->aGlobals)) {
+        return $this->aGlobals[$sName];        
+      } else {
+        trigger_error("Property not defined", E_USER_ERROR);
+      }
     }
     
     public function __unset($sName) {
