@@ -1,4 +1,8 @@
 Feature: Argument Transformation
+  As a user of cuke4php
+  I want to use step argument transforms
+  So that I can simplify my code
+  Example transforms can be found in WireSteps.php
   
 Scenario: An argument is transformed to an integer
   Given I store "123" into "Foo"
@@ -9,7 +13,7 @@ Scenario: use a transform to substitute variable in arguments
   And I store "{Bar}" into "Foo"
   Then "Foo" should equal "foo"
   
-Scenario: An argument is transformed to an integer, but the second defined transform wins
+Scenario: An argument is transformed, but the second defined transform wins
   Given I store "abcd" into "Foo"
   Then "Foo" should equal "ABCD"
 

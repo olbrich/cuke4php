@@ -9,3 +9,7 @@
   
 2011-01-28
   * trap and handle php errors, convert them to exceptions and then let them bubble up as usual.
+
+2011-01-30
+  * use magic setters and getters to allow assignment and retrieval of properties on steps
+  * implement step argument transformations
