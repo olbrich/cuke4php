@@ -175,6 +175,20 @@ class WireSteps extends CucumberSteps {
     public function transformToInteger($sArg) {
       return intval($sArg);
     }
+
+    /**
+    * Transform /^(abcd)$/
+    **/
+    public function transformReverse($sArg) {
+      return "dcba";
+    }
+
+    /**
+    * Transform /^(abcd)$/
+    **/
+    public function transformCapitalize($sArg) {
+      return "ABCD";
+    }
     
     /**
     * Transform /^\{(.*)\}$/
@@ -182,6 +196,14 @@ class WireSteps extends CucumberSteps {
     public function transformSubstituteValues($sArg) {
       return $this->$sArg;
     }
+    
+    /**
+    * Transform /^table:reverse$/
+    **/
+    public function transformReverseTable($aTable) {
+      return array_reverse($aTable);
+    }
+    
 
     /**
     * Then /^"([^"]*)" should be a kind of "([^"]*)"$/

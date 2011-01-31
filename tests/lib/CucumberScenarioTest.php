@@ -35,6 +35,7 @@ class CucumberScenarioTest extends PHPUnit_Framework_TestCase {
     public function setup() {
         CucumberSteps::clearMocks();
         $this->aWorld = array(
+            'transform' => array(),
             'before' => array(
                 array(
                     'tags' => array('one'),

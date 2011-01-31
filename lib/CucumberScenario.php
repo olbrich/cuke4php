@@ -112,14 +112,24 @@ class CucumberScenario {
     function invoke($iStepId, $aArgs) {
         $aStep = $this->aWorld['steps'][$iStepId];
         $oStep = new $aStep['class']($this->aGlobals);
-        foreach ($aArgs as $iIndex => $sArg) {
-          foreach ($this->aWorld['transform'] as $aTransform) {
+        foreach ($aArgs as &$sArg) {
+          $sArgTest = $sArg;
+          if (is_array($sArgTest)) {
+            $sArgTest = "table:" . implode(",",$sArgTest[0]);
+          }
+          foreach (array_reverse($this->aWorld['transform'],true) as $aTransform) {
             $aMatches = array();
-            if (is_string($sArg) && preg_match_all($aTransform['regexp'], $sArg, $aMatches, PREG_OFFSET_CAPTURE)) {
+            if (preg_match_all($aTransform['regexp'], $sArgTest, $aMatches, PREG_OFFSET_CAPTURE)) {
               $oTransform = new $aTransform['class']($this->aGlobals);
-              $aArgs[$iIndex] = call_user_func_array(array($oTransform, $aTransform['method']),$aMatches[1][0]);
+              if (is_array($sArg)) {
+                $sArg = call_user_func_array(array($oTransform, $aTransform['method']),$sArg);                
+              } else {
+                $sArg = call_user_func_array(array($oTransform, $aTransform['method']),$aMatches[1][0]);                
+              }
+              break;
             }
           }
+          
         }
         try {
             call_user_func_array(array($oStep, $aStep['method']),$aArgs);
