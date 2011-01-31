@@ -83,7 +83,7 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
       if (array_key_exists($sName, $this->aGlobals)) {
         return $this->aGlobals[$sName];        
       } else {
-        trigger_error("Property not defined", E_USER_ERROR);
+        trigger_error("Property ($sName) not defined", E_USER_ERROR);
       }
     }
     

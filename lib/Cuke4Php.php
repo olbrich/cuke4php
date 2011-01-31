@@ -21,7 +21,8 @@ class Cuke4Php {
     public $aWorld = array(
         'steps' => array(),
         'before' => array(),
-        'after' => array()
+        'after' => array(),
+        'transform' => array()
     );
 
     function __construct($_sFeaturePath, $_iPort = 16816) {
@@ -74,6 +75,12 @@ class Cuke4Php {
                 }
                 if (substr($oMethod->name, 0, 5) === "after") {
                     $this->aWorld['after'][] = $aMethod;
+                    continue;
+                }
+                if (substr($oMethod->name, 0, 9) == "transform") {
+                    preg_match("/(?:Transform) (.+)$/im", $sComment, $aMatches);
+                    $aMethod['regexp'] = $aMatches[1];
+                    $this->aWorld['transform'][] = $aMethod;
                     continue;
                 }
             }

@@ -169,6 +169,27 @@ class WireSteps extends CucumberSteps {
         self::assertInstanceOf($sExceptionClass, $this->exception);
     }
     
+    /**
+    * Transform /^(\d+)$/
+    **/
+    public function transformToInteger($sArg) {
+      return intval($sArg);
+    }
+    
+    /**
+    * Transform /^\{(.*)\}$/
+    **/
+    public function transformSubstituteValues($sArg) {
+      return $this->$sArg;
+    }
+
+    /**
+    * Then /^"([^"]*)" should be a kind of "([^"]*)"$/
+    **/
+    public function stepParameterShouldBeAKindOfParameter($sKey,$sTypeName) {
+        self::assertInternalType($sTypeName, $this->$sKey);
+    }
+    
 }
 
 ?>
