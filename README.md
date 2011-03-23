@@ -21,7 +21,7 @@ Usage
 * make sure your cucumber features has a 'Cuke4Php.wire' file in step_definitions containing something like:
 
 		host: localhost
-		port: 16816
+		port: <%= ENV['CUKE4PHP_PORT'] %>
 	
 * you can write both Ruby and PHP steps
 * you __must__ require the PHPUnit library from a file in your features/support/ directory (e.g., features/support/Env.php) for cuke4php to work
@@ -32,12 +32,7 @@ Roadmap
 ### bin/cuke4php
 
 * support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
-* autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
 * lint check all php files in features directory before starting the cuke4php server
-
-### Gemfile
-
-* once the patch for erb templating in .wire files in cucumber is released, we should set a minimum version for it
 
 Dependencies
 ------------
