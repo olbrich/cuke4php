@@ -5,5 +5,4 @@ group :development do
   gem 'jeweler'
 end
 
-gem 'cucumber'
-# TODO: once the patch for erb templating in the .wire files is released, we should set a minimum version for it
+gem 'cucumber', '>= 0.10.2'
