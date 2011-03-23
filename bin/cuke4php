@@ -2,21 +2,53 @@
 
 # TODO: support an option like 'cuke4php --init' which will generate the directory structure and support files necessary to use cuke4php with a php project.
 
-# TODO: autodetect an available port and then use it to run the cuke4php server pass this on to cucumber by setting an environment variable (requires a modification to cucumber)
-# see https://github.com/olbrich/cucumber/commit/0c11d206e08e8d5647e03bf78be93723d59529ef
-
 # TODO: lint check all php files before starting the cuke4php server
 
-# Note that changing the port number currently requires updating the Cuke4Php.wire file in your project's step_definitions
-# or cucumber will look for the cuke4php server on the wrong port.
-CUKE4PHP_PORT=ENV['CUKE4PHP_PORT'] || 16816
+# This script will autodetect the first free port starting at 16816 and pass it to cucumber in the 
+# CUKE4PHP_PORT environment variable.  Versions of cucumber > 0.10.2 can use erb in the .wire protocol file
+# to dynamically pick up this port number at runtime, which allows multiple instances of a cuke4php server
+# to be run on the same machine without conflicting
+
+require 'socket'
+require 'timeout'
+
+def port_in_use?(_port)
+  begin
+    Timeout::timeout(1) do
+      
+      begin
+        s = TCPSocket.new('localhost', _port)
+        s.close
+        return true
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        return false
+      end
+      
+    end
+    
+  rescue Timeout::Error
+  end
+
+  return false
+end
+
+def autodetect_free_port
+  port = 16816
+  while port_in_use?(port) && port < 65536 do
+    port+=1
+  end
+  raise RuntimeError, "No free port detected" if port == 65536
+  return port
+end
+
+cuke4php_port=ENV['CUKE4PHP_PORT'] || autodetect_free_port
 
 server = fork do
-  exec "#{File.dirname(__FILE__)}/../php_bin/cuke4php_server -p #{CUKE4PHP_PORT} #{ARGV.last ? ARGV.last : 'features'}"  
+  exec "#{File.dirname(__FILE__)}/../php_bin/cuke4php_server -p #{cuke4php_port} #{ARGV.last ? ARGV.last : 'features'}"  
 end
 sleep 1
 cucumber = fork do
-  exec "CUKE4PHP_PORT=#{CUKE4PHP_PORT} && cucumber #{ARGV.join(' ')}"
+  exec "export CUKE4PHP_PORT=#{cuke4php_port} && cucumber #{ARGV.join(' ')}"
 end
 pid, status = Process.wait2(cucumber,0)
 Process.kill("TERM",server)

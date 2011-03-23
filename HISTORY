@@ -13,3 +13,8 @@
 2011-01-30
   * use magic setters and getters to allow assignment and retrieval of properties on steps
   * implement step argument transformations
+
+2011-03-23 -- 0.9.3
+  * utilizes cucumber 0.10.2's ability to use erb templates in .wire files to listen to a specific port
+  * release 0.9.3
+  * modify cuke4php runner script to dynamically pick an unused port

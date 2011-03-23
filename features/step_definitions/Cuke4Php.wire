@@ -1,4 +1,4 @@
 host: localhost
-port: 16816
+port: <%= ENV['CUKE4PHP_PORT'] || 16816 %>
 invoke:
     timeout: 0.1
