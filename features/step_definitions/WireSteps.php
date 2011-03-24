@@ -11,18 +11,30 @@ class WireSteps extends CucumberSteps {
      * @wire
      */
     function beforeWire() {
-        $this->before = 'beforeWire';
+        $this->beforeWire = true;
     }
 
     function beforeAll() {
-
+        $this->beforeAll = true;
     }
+
+    /**
+     * @wire
+     */
+    function afterWire() {
+        $this->afterWire = true;
+    }
+
+    function afterAll() {
+        $this->afterAll = true;
+    }
+
 
     /**
      * Given /^some setup$/
      **/
     public function stepSomeSetup() {
-        
+       $this->setup = "true";
     }
 
     /**

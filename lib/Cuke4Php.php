@@ -68,6 +68,8 @@ class Cuke4Php {
                 preg_match("/(@.+)/im", $sComment, $aMatches);
                 if (array_key_exists(1, $aMatches)) {
                     $aMethod['tags'] = explode(" ", str_replace("@", "", $aMatches[1]));
+                } else {
+                    $aMethod['tags'] = array();
                 }
                 if (substr($oMethod->name, 0, 6) === "before") {
                     $this->aWorld['before'][] = $aMethod;

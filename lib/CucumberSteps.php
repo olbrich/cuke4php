@@ -67,7 +67,7 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
      * Get an instance of a hook which is either a pre-set mock,
      * or an instance of the appropriate step class with the globals initialized
      */
-    static function getInstance($sClass, $aGlobals) {
+    static function getInstance($sClass, &$aGlobals) {
         if (array_key_exists($sClass, self::$aMocks) && self::$aMocks[$sClass]) {
             return self::$aMocks[$sClass];
         } else {
@@ -83,7 +83,7 @@ class CucumberSteps extends PHPUnit_Framework_Assert {
       if (array_key_exists($sName, $this->aGlobals)) {
         return $this->aGlobals[$sName];        
       } else {
-        trigger_error("Property ($sName) not defined", E_USER_ERROR);
+        trigger_error("Property ($sName) not defined... can be one of [" . implode(",",array_keys($this->aGlobals)) . "]", E_USER_ERROR);
       }
     }
     

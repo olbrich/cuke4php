@@ -42,4 +42,14 @@ Scenario: I unset a property
 Scenario: I try to read a property that was not set first
   Given "Foo" should not be set
   Then getting "Foo" should raise an "PHPUnit_Framework_Error"
+
+@wire
+Scenario: Before callbacks
+  Given some setup
+  Then "beforeAll" should be set
+  And "beforeWire" should be set
   
+Scenario: Before callbacks for untagged scenario
+    Given some setup
+    Then "beforeAll" should be set
+    And "beforeWire" should not be set
