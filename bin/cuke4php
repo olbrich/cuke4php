@@ -44,7 +44,7 @@ end
 cuke4php_port=ENV['CUKE4PHP_PORT'] || autodetect_free_port
 
 server = fork do
-  exec "#{File.dirname(__FILE__)}/../php_bin/cuke4php_server -p #{cuke4php_port} #{ARGV.last ? ARGV.last : 'features'}"  
+  exec "#{File.dirname(__FILE__)}/cuke4php_server -p #{cuke4php_port} #{ARGV.last ? ARGV.last : 'features'}"  
 end
 sleep 1
 cucumber = fork do
