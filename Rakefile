@@ -40,19 +40,6 @@ require 'cucumber/rake/task'
 
 task :default => [:features, :phpunit]
 
-namespace :server do
-  
-    desc "start cuke4php server"
-    task :start do
-      sh "#{File.dirname(__FILE__)}/php_bin/cuke4php #{ARGV.first ? ARGV.first : 'features'} &"
-    end
-    
-    desc "stop cuke4php server"
-    task :stop do
-      sh "echo 'quit' | nc #{ENV['SERVER'] || 'localhost'} #{ENV['PORT'] || 16816}"
-    end
-end
-
 desc "Run Cucumber features for Cuke4php"
 task :features do
   sh "bin/cuke4php -p #{ENV['PROFILE'] || 'default'} features"
