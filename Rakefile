@@ -10,7 +10,6 @@ begin
     gem.authors = ["Kevin Olbrich", "Alessandro Dal Grande"]
     gem.email = ["kevin.olbrich+cuke4php@gmail.com", "aledalgrande@gmail.com"]
     gem.homepage = "http://github.com/olbrich/cuke4php"
-    gem.executables = ['cuke4php','cuke4php_server']
     gem.files.exclude 'phpdoc'
     gem.has_rdoc = false
     gem.requirements << "PHP 5.2+"
