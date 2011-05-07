@@ -5,14 +5,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cuke4php}
-  s.version = "0.9.6.a"
+  s.version = "0.9.6.b"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kevin Olbrich", "Alessandro Dal Grande"]
-  s.date = %q{2011-05-03}
+  s.date = %q{2011-05-06}
   s.description = %q{Using this protocol it is possible to directly interact with PHP code at any level without the need for a web server.  To accomplish this, when cucumber is running against a directory containing feature files and it cannot resolve a particular step definition, it will ask a known wire server (as defined in a .wire file) to interpret and run those steps.}
   s.email = ["kevin.olbrich+cuke4php@gmail.com", "aledalgrande@gmail.com"]
-  s.executables = ["cuke4php", "cuke4php_server"]
+  s.executables = ["cuke4php_server", "cuke4php"]
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md"
@@ -40,10 +40,10 @@ Gem::Specification.new do |s|
     "lib/CucumberScenario.php",
     "lib/CucumberSteps.php",
     "lib/Cuke4Php.php",
+    "php_bin/cuke4php_server.php",
     "tests/lib/CucumberScenarioTest.php",
     "tests/lib/Cuke4PhpTest.php"
   ]
-  s.has_rdoc = false
   s.homepage = %q{http://github.com/olbrich/cuke4php}
   s.post_install_message = %q{********************************************************************************
 
