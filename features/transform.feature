@@ -28,3 +28,15 @@ Scenario: transform a table
     | three |
     | two |
     | one |
+    
+Scenario: transform a table with two columns
+  Given "table" is:
+    | KEY | VALUE |
+    | one | a |
+    | two | b |
+    | three | c |
+  Then "table" should equal:
+    | KEY | VALUE |
+    | ONE | A |
+    | TWO | B |
+    | THREE | C |

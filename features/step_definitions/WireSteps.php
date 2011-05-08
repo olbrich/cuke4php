@@ -213,7 +213,14 @@ class WireSteps extends CucumberSteps {
     * Transform /^table:reverse$/
     **/
     public function transformReverseTable($aTable) {
-      return array_reverse($aTable);
+      return array_reverse($aTable[0]);
+    }
+
+    /**
+    * Transform /^table:KEY,VALUE$/
+    **/
+    public function transformKeyValueTable($aTable) {
+      return array_map("strtoupper",$aTable[0]);
     }
     
 

@@ -114,7 +114,7 @@ class CucumberScenario {
         $oStep = new $aStep['class']($this->aGlobals);
         foreach ($aArgs as &$sArg) {
           $sArgTest = $sArg;
-          if (is_array($sArgTest)) {
+          if (is_array($sArg)) {
             $sArgTest = "table:" . implode(",",$sArgTest[0]);
           }
           foreach (array_reverse($this->aWorld['transform'],true) as $aTransform) {
@@ -122,7 +122,7 @@ class CucumberScenario {
             if (preg_match_all($aTransform['regexp'], $sArgTest, $aMatches, PREG_OFFSET_CAPTURE)) {
               $oTransform = new $aTransform['class']($this->aGlobals);
               if (is_array($sArg)) {
-                $sArg = call_user_func_array(array($oTransform, $aTransform['method']),$sArg);                
+                $sArg = call_user_func_array(array($oTransform, $aTransform['method']),array($sArg));
               } else {
                 $sArg = call_user_func_array(array($oTransform, $aTransform['method']),$aMatches[1][0]);                
               }
