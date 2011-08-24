@@ -26,6 +26,7 @@ class Cuke4Php {
     );
 
     function __construct($_sFeaturePath, $_iPort = 16816) {
+        openlog("cuke4php", 0, LOG_DAEMON);
         if (is_file($_sFeaturePath)) {
           $_sFeaturePath = dirname($_sFeaturePath);
         }
@@ -119,11 +120,12 @@ class Cuke4Php {
     }
 
     function run() {
-        print "Cuke4Php listening on port $this->iPort\n";
+        syslog(LOG_INFO,"Cuke4Php listening on port $this->iPort\n");
         $this->oSocket = socket_create_listen($this->iPort);
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
             socket_getpeername($connection, $raddr, $rport);
+            syslog(LOG_INFO,"Connection from $raddr");
             try {
                 while ($this->bRun && ($input = socket_read($connection, 4096, PHP_NORMAL_READ))) {
                     $data = trim($input);
@@ -135,11 +137,13 @@ class Cuke4Php {
                     }
                 }                
             } catch (Exception $e) {
-               if (socket_last_error($connection) != 54) {
-                   throw $e;
-               };
+                if (socket_last_error($connection) != 54) {
+                    syslog(LOG_ERR,$e->getMessage());
+                    throw $e;
+                };
             }
             socket_close($connection);
+            syslog(LOG_INFO,"Connection closed");
             sleep(1);
         }
     }
@@ -189,6 +193,7 @@ class Cuke4Php {
      * run any before hooks for a scenario
      */
     function beginScenario($aTags) {
+        syslog(LOG_DEBUG,"Begin Scenario");
         $this->setScenario(CucumberScenario::getInstance($this->aWorld));
         return $this->oScenario->invokeBeforeHooks($aTags);
     }
@@ -222,6 +227,7 @@ class Cuke4Php {
      */
     function endScenario($aTags) {
         $oResult = $this->oScenario->invokeAfterHooks($aTags);
+        syslog(LOG_DEBUG,"End Scenario");
         $this->oScenario = null;
         return $oResult;
     }

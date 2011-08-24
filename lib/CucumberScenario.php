@@ -66,6 +66,7 @@ class CucumberScenario {
          if (array_key_exists('tags', $aBeforeHook)) {
            if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
              $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
+             syslog(LOG_DEBUG,"Invoking Before Hook \"{$aBeforeHook['method']}\"");
              $oResult = $oStep->invoke($aBeforeHook['method']);
              if ($oResult === false) {
                return array('failure');
@@ -89,6 +90,7 @@ class CucumberScenario {
          if (array_key_exists('tags', $aAfterHook)) {
            if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
              $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
+             syslog(LOG_DEBUG,"Invoking After Hook \"{$aAfterHook['method']}\"");
              $oResult = $oStep->invoke($aAfterHook['method']);
              if ($oResult === false) {
                return array('failure');
@@ -132,14 +134,19 @@ class CucumberScenario {
           
         }
         try {
+            syslog(LOG_DEBUG,"Invoking Step \"{$aStep['method']}\"");
             call_user_func_array(array($oStep, $aStep['method']),$aArgs);
         } catch (PHPUnit_Framework_IncompleteTestError $e) {
+            syslog(LOG_DEBUG,"Step Pending");
             return array('pending',$e->getMessage());
         } catch (PHPUnit_Framework_SkippedTestError $e) {
+            syslog(LOG_DEBUG,"Step Pending");
             return array('pending',$e->getMessage());
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            syslog(LOG_DEBUG,"Step Failed due to unmet expectation: " . $e->getMessage());
             return array('fail', array('message' => $e->getMessage()));
         } catch (Exception $e) {
+            syslog(LOG_DEBUG,"Step failed due to ". get_class($e) ." exception :" . $e->getMessage());
             return array('fail', array('message' => $e->getMessage() . " " . $e->getFile() . ":" . $e->getLine(), 'exception' => get_class($e), 'backtrace' => $e->getTraceAsString()));
         }
         return array('success');
