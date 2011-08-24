@@ -124,14 +124,20 @@ class Cuke4Php {
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
             socket_getpeername($connection, $raddr, $rport);
-            while ($this->bRun && ($input = socket_read($connection, 1024 * 4))) {
-                $data = trim($input);
-                if ($data !== "") {
-                    $output = json_encode($this->process($data)) . "\n";
-                    if ($this->bRun) {
-                      socket_write($connection, $output);
+            try {
+                while ($this->bRun && ($input = socket_read($connection, 4096, PHP_NORMAL_READ))) {
+                    $data = trim($input);
+                    if ($data !== "") {
+                        $output = json_encode($this->process($data)) . "\n";
+                        if ($this->bRun) {
+                          socket_write($connection, $output);
+                        }
                     }
-                }
+                }                
+            } catch (Exception $e) {
+               if (socket_last_error($connection) != 54) {
+                   throw $e;
+               };
             }
             socket_close($connection);
             sleep(1);
