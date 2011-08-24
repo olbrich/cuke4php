@@ -26,7 +26,7 @@ class Cuke4Php {
     );
 
     function __construct($_sFeaturePath, $_iPort = 16816) {
-        openlog("cuke4php", 0, LOG_DAEMON);
+        openlog("cuke4php", LOG_PID, LOG_DAEMON);
         if (is_file($_sFeaturePath)) {
           $_sFeaturePath = dirname($_sFeaturePath);
         }
@@ -137,10 +137,20 @@ class Cuke4Php {
                     }
                 }                
             } catch (Exception $e) {
-                if (socket_last_error($connection) != 54) {
-                    syslog(LOG_ERR,$e->getMessage());
-                    throw $e;
-                };
+                switch (socket_last_error($connection)) {
+                    case 54:
+                        // connection closed by peer
+                    case 104:
+                        // unable to read from socket
+                        // these errors just mean we are done and the connection should be closed.
+                        // it does not mean we should stop listening for new connections.
+                        break;
+
+                    default:
+                        syslog(LOG_ERR,$e->getMessage());
+                        throw $e;
+                        break;
+                }
             }
             socket_close($connection);
             syslog(LOG_INFO,"Connection closed");
@@ -193,7 +203,7 @@ class Cuke4Php {
      * run any before hooks for a scenario
      */
     function beginScenario($aTags) {
-        syslog(LOG_DEBUG,"Begin Scenario");
+        syslog(LOG_DEBUG,"Begin Scenario:  Tags: " . implode(", ", $aTags));
         $this->setScenario(CucumberScenario::getInstance($this->aWorld));
         return $this->oScenario->invokeBeforeHooks($aTags);
     }
