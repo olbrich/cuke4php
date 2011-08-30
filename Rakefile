@@ -27,6 +27,9 @@ begin
   Install PHPUnit:
   pear install phpunit/PHPUnit
 
+  Optional:  Use PEAR/Net_Server for a remote forking server implementation
+             (requires PHP with pcntl extensions)
+
 ********************************************************************************
 eos
   end
