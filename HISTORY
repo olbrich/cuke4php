@@ -18,3 +18,6 @@
   * utilizes cucumber 0.10.2's ability to use erb templates in .wire files to listen to a specific port
   * release 0.9.3
   * modify cuke4php runner script to dynamically pick an unused port
+
+2011-08-30 -- 0.9.8
+  * add support for a forking socket listener
