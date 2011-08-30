@@ -17,7 +17,7 @@ if (array_key_exists('p',$aOptions)) {
     $iPort = 16816;
 }
 
-$oServer = &Net_Server::create('fork','localhost', $iPort);
+$oServer = &Net_Server::create('fork','0.0.0.0', $iPort);
 $oServerHandler = &new Cuke4PhpForkingServer(realpath($argv[$argc-1]), $iPort);
 $oServer->setCallbackObject($oServerHandler);
 $oServer->start();
