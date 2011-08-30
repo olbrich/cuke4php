@@ -26,6 +26,7 @@ class Cuke4Php {
     );
 
     function __construct($_sFeaturePath, $_iPort = 16816) {
+        openlog("cuke4php", LOG_PID, LOG_DAEMON);
         if (is_file($_sFeaturePath)) {
           $_sFeaturePath = dirname($_sFeaturePath);
         }
@@ -119,21 +120,40 @@ class Cuke4Php {
     }
 
     function run() {
-        print "Cuke4Php listening on port $this->iPort\n";
+        syslog(LOG_INFO,"Cuke4Php listening on port $this->iPort\n");
         $this->oSocket = socket_create_listen($this->iPort);
         $this->bRun = true;
         while ($this->bRun && ($connection = socket_accept($this->oSocket))) {
             socket_getpeername($connection, $raddr, $rport);
-            while ($this->bRun && ($input = socket_read($connection, 1024 * 4))) {
-                $data = trim($input);
-                if ($data !== "") {
-                    $output = json_encode($this->process($data)) . "\n";
-                    if ($this->bRun) {
-                      socket_write($connection, $output);
+            syslog(LOG_INFO,"Connection from $raddr");
+            try {
+                while ($this->bRun && ($input = socket_read($connection, 4096, PHP_NORMAL_READ))) {
+                    $data = trim($input);
+                    if ($data !== "") {
+                        $output = json_encode($this->process($data)) . "\n";
+                        if ($this->bRun) {
+                          socket_write($connection, $output);
+                        }
                     }
+                }                
+            } catch (Exception $e) {
+                switch (socket_last_error($connection)) {
+                    case 54:
+                        // connection closed by peer
+                    case 104:
+                        // unable to read from socket
+                        // these errors just mean we are done and the connection should be closed.
+                        // it does not mean we should stop listening for new connections.
+                        break;
+
+                    default:
+                        syslog(LOG_ERR,$e->getMessage());
+                        throw $e;
+                        break;
                 }
             }
             socket_close($connection);
+            syslog(LOG_INFO,"Connection closed");
             sleep(1);
         }
     }
@@ -183,6 +203,7 @@ class Cuke4Php {
      * run any before hooks for a scenario
      */
     function beginScenario($aTags) {
+        syslog(LOG_DEBUG,"Begin Scenario:  Tags: " . implode(", ", $aTags));
         $this->setScenario(CucumberScenario::getInstance($this->aWorld));
         return $this->oScenario->invokeBeforeHooks($aTags);
     }
@@ -216,6 +237,7 @@ class Cuke4Php {
      */
     function endScenario($aTags) {
         $oResult = $this->oScenario->invokeAfterHooks($aTags);
+        syslog(LOG_DEBUG,"End Scenario");
         $this->oScenario = null;
         return $oResult;
     }

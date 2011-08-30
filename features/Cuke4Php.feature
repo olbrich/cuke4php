@@ -55,3 +55,6 @@ Scenario Outline: Error Handling
 Scenario: Exception Handling
   When an "Exception" is thrown with message "generic exception"
   Then an "Exception" should be caught  
+  
+Scenario: nested capture groups work fine
+  Given the losing code "one" has the prize "two"

@@ -231,6 +231,13 @@ class WireSteps extends CucumberSteps {
         self::assertInternalType($sTypeName, $this->$sKey);
     }
     
+    /**
+    * Given /^the(?: losing)? code "([^"]*)"(?: has the prize "([^"]*)")?$/
+    **/
+    public function stepTheLosingCodeParameterHasThePrizeParameter($sCode, $sPrize) {
+        $this->$sCode = $sPrize;
+    }
+    
 }
 
 ?>
