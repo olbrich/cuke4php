@@ -24,6 +24,10 @@ class Cuke4PhpForkingServer extends Net_Server_Handler
 		$output = json_encode($this->cuke4php->process($data)) . "\n";
 		$this->_server->sendData($iClientId, $output);
 	}
+
+	function onClose($iClientId) {
+		// Do nothing
+	}
 }
 
 
