@@ -8,11 +8,11 @@ Gem::Specification.new do |s|
   s.version = "0.9.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Kevin Olbrich", "Alessandro Dal Grande"]
+  s.authors = [%q{Kevin Olbrich}, %q{Alessandro Dal Grande}]
   s.date = %q{2011-08-31}
   s.description = %q{Using this protocol it is possible to directly interact with PHP code at any level without the need for a web server.  To accomplish this, when cucumber is running against a directory containing feature files and it cannot resolve a particular step definition, it will ask a known wire server (as defined in a .wire file) to interpret and run those steps.}
-  s.email = ["kevin.olbrich+cuke4php@gmail.com", "aledalgrande@gmail.com"]
-  s.executables = ["cuke4php_forking_server", "cuke4php_server", "cuke4php"]
+  s.email = [%q{kevin.olbrich+cuke4php@gmail.com}, %q{aledalgrande@gmail.com}]
+  s.executables = [%q{cuke4php_forking_server}, %q{cuke4php_server}, %q{cuke4php}]
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md"
@@ -47,7 +47,6 @@ Gem::Specification.new do |s|
     "tests/lib/CucumberScenarioTest.php",
     "tests/lib/Cuke4PhpTest.php"
   ]
-  s.has_rdoc = false
   s.homepage = %q{http://github.com/olbrich/cuke4php}
   s.post_install_message = %q{********************************************************************************
 
@@ -66,13 +65,12 @@ Gem::Specification.new do |s|
 
 ********************************************************************************
 }
-  s.require_paths = ["lib"]
-  s.requirements = ["PHP 5.2+", "PHPUnit 3.0+"]
-  s.rubygems_version = %q{1.3.7}
+  s.require_paths = [%q{lib}]
+  s.requirements = [%q{PHP 5.2+}, %q{PHPUnit 3.0+}]
+  s.rubygems_version = %q{1.8.5}
   s.summary = %q{Implementation of the Cucumber wire protocol for PHP projects}
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
