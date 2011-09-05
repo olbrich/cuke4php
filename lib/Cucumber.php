@@ -5,10 +5,12 @@
  */
 
 /**
- * load all php files in this directory
+ * load all php files except the forking server in this directory
+ * Note:  If you require the forking server, it will fail unless pear/Net_Server is installed
  */
-foreach (glob(dirname(__FILE__) . "/*.php") as $sFilename) {
-    require_once $sFilename;
-}
+
+require_once dirname(__FILE__) . "/CucumberScenario.php";
+require_once dirname(__FILE__) . "/CucumberSteps.php";
+require_once dirname(__FILE__) . "/Cuke4php.php";
 
 ?>
