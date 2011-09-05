@@ -11,6 +11,6 @@
 
 require_once dirname(__FILE__) . "/CucumberScenario.php";
 require_once dirname(__FILE__) . "/CucumberSteps.php";
-require_once dirname(__FILE__) . "/Cuke4php.php";
+require_once dirname(__FILE__) . "/Cuke4Php.php";
 
 ?>
