@@ -24,6 +24,10 @@ class Cuke4Php {
         'after' => array(),
         'transform' => array()
     );
+    private $aKeyWords = array(
+      'en' => 'Given|When|Then',
+      'ru' => 'Допустим|Пусть|Если|Когда|Тогда|То'
+    );
 
     function __construct($_sFeaturePath, $_iPort = 16816) {
         openlog("cuke4php", LOG_PID, LOG_DAEMON);
@@ -35,7 +39,7 @@ class Cuke4Php {
         } else {
             $this->iPort = 16816;
         }
-                
+
         foreach (self::rglob("*.php", 0,  $_sFeaturePath . "/support") as $sFilename) {
             require_once $sFilename;
         }
@@ -43,7 +47,7 @@ class Cuke4Php {
           array('PHPUnit_Util_ErrorHandler', 'handleError'),
           E_ALL | E_STRICT
         );
-        
+
         require_once "Cucumber.php";
         foreach (self::rglob("*.php", 0,  $_sFeaturePath . "/step_definitions") as $sFilename) {
             require_once $sFilename;
@@ -61,7 +65,8 @@ class Cuke4Php {
                 $aMethod['filename'] = $oMethod->getFileName();
                 $aMethod['startline'] = $oMethod->getStartLine();
                 if (substr($oMethod->name, 0, 4) === "step") {
-                    preg_match("/(?:Given|When|Then) (.+)$/im", $sComment, $aMatches);
+                    $keywords = is_array($this->aKeyWords)?implode('|',$this->aKeyWords):$this->aKeyWords;
+                    preg_match("/(?:".$keywords.") (.+)$/im", $sComment, $aMatches);
                     $aMethod['regexp'] = $aMatches[1];
                     $this->aWorld['steps'][] = $aMethod;
                     continue;
@@ -135,7 +140,7 @@ class Cuke4Php {
                           socket_write($connection, $output);
                         }
                     }
-                }                
+                }
             } catch (Exception $e) {
                 switch (socket_last_error($connection)) {
                     case 54:
