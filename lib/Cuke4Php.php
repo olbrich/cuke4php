@@ -251,7 +251,7 @@ class Cuke4Php {
         $sMethodName = "step" . str_replace(" ", "", ucwords(preg_replace("/\W+/", " ", preg_replace("/\"[^\"]*\"/", "Parameter", $aSnippet->step_name))));
         $count = 0;
         $aParams = array();
-        $sStepName = preg_replace("/\"[^\"]*\"/", "\"([^\"]*)\"", preg_quote($aSnippet->step_name), -1, &$count);
+        $sStepName = preg_replace("/\"[^\"]*\"/", "\"([^\"]*)\"", preg_quote($aSnippet->step_name), -1, $count);
         for ($param = 1; $param <= $count; $param++) {
             $aParams[] = "\$arg$param";
         }
