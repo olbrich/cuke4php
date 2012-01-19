@@ -51,5 +51,13 @@ cucumber = fork do
   exec "export CUKE4PHP_PORT=#{cuke4php_port} && cucumber #{ARGV.join(' ')}"
 end
 pid, status = Process.wait2(cucumber,0)
-Process.kill("TERM",server)
+
+# Send the "bye" status to the cuke4php server
+cuke4php_sock = TCPSocket.open('localhost', cuke4php_port)
+cuke4php_sock.puts "bye\n"
+cuke4php_sock.close
+
+# Wait for it to close
+Process.wait(server)
+
 exit status.exitstatus
