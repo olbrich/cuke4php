@@ -10,4 +10,11 @@
 	@include_once "PHPUnit/Autoload.php";	
 	@include_once "PHPUnit/Framework.php";
 
+  function shutdown()
+  {
+    echo "Cuke4php server gracefully shutdown\n";
+  }
+  
+  register_shutdown_function('shutdown');
+
 ?>
