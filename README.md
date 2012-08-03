@@ -2,7 +2,7 @@ cuke4php
 ========
 
 This project implements the cucumber wire protocol for PHP projects.
-Information about the wire protocol: http://wiki.github.com/aslakhellesoy/cucumber/wire-protocol
+Information about the wire protocol: http://wiki.github.com/cucumber/cucumber/wire-protocol
 
 Using this protocol it is possible to directly interact with PHP code at any level without the need for a web server.  To accomplish this, when cucumber is running against a directory containing feature files and it cannot resolve a particular step definition, it will ask a known wire server (as defined in a .wire file) to interpret and run those steps.
 
