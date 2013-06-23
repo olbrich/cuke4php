@@ -63,7 +63,7 @@ class CucumberScenario {
          $aTags = array();
        }
        foreach ($this->aWorld['before'] as $aBeforeHook) {
-         if (array_key_exists('tags', $aBeforeHook)) {
+         if (array_key_exists('tags', $aBeforeHook) || $aBeforeHook['method'] == 'beforeAll') {
            if (count($aBeforeHook['tags']) == 0 || count(array_intersect($aTags, $aBeforeHook['tags'])) > 0) {
              $oStep = CucumberSteps::getInstance($aBeforeHook['class'], $this->aGlobals);
              syslog(LOG_DEBUG,"Invoking Before Hook \"{$aBeforeHook['method']}\"");
@@ -87,7 +87,7 @@ class CucumberScenario {
          $aTags = array();
        }
        foreach ($this->aWorld['after'] as $aAfterHook) {
-         if (array_key_exists('tags', $aAfterHook)) {
+         if (array_key_exists('tags', $aAfterHook) || $aAfterHook['method'] == 'afterAll') {
            if (count($aAfterHook['tags']) == 0 || count(array_intersect($aTags, $aAfterHook['tags'])) > 0) {
              $oStep = CucumberSteps::getInstance($aAfterHook['class'], $this->aGlobals);
              syslog(LOG_DEBUG,"Invoking After Hook \"{$aAfterHook['method']}\"");
