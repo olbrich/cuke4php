@@ -4,7 +4,8 @@
  */
 
 set_time_limit(0);
-
+mb_internal_encoding('utf-8');
+mb_regex_encoding('utf-8');
 
 /**
  *  Cuke4Php implements the Cucumber wire protocol for PHP
@@ -222,7 +223,7 @@ class Cuke4Php {
                 $aArgs = array();
                 array_shift($aMatches);
                 foreach ($aMatches as $aMatch) {
-                    $aArgs[] = array('val' => $aMatch[0][0], 'pos' => $aMatch[0][1]);
+                    $aArgs[] = array('val' => $aMatch[0][0], 'pos' => $this->getCharPosition($sStep, $aMatch[0][1]));
                 }
                 $aSteps[] = array('id' => $i, 'args' => $aArgs, 'source' => $aStep['filename'] . ":" . $aStep['startline']);
             };
@@ -276,6 +277,10 @@ public function $sMethodName($sParams) {
 }
 EOT;
         return array('success', $sMethodBody);
+    }
+
+    private function getCharPosition($text, $bytePos) {
+        return mb_strlen(substr($text, 0, $bytePos));
     }
 }
 
